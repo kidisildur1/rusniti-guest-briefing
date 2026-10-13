@@ -1,0 +1,9 @@
+# Local backups and development files
+backup-before-english-*/
+language-test-output/
+node_modules/
+.env
+.env.*
+*.log
+.DS_Store
+Thumbs.db

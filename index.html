@@ -1,0 +1,2338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="ООО «ИЦ ТМК» / АО «РусНИТИ» — Система контроля соблюдения ТБ. Вводный инструктаж для командированных сотрудников и посетителей." />
+  <meta name="theme-color" content="#E8500A" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Система контроля соблюдения ТБ — ИЦ ТМК / РусНИТИ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+/* ================================================================
+   ИЦ ТМК — Система обучения по охране труда
+   Design: Enterprise 2026 · Manrope · Industrial clean · Mobile-first
+   ================================================================ */
+
+:root {
+  /* Brand */
+  --brand:        #E8500A;
+  --brand-dark:   #c74008;
+  --brand-dim:    #ff7a3d;
+  --brand-bg:     #fff4ee;
+  --brand-mid:    #ffdfc8;
+
+  /* Neutrals */
+  --bg:           #F2F3F6;
+  --surface:      #FFFFFF;
+  --surface-2:    #F8F9FC;
+  --border:       #E4E6EC;
+  --border-dark:  #CDD0D9;
+
+  /* Text */
+  --text:         #0F1117;
+  --text-2:       #44495A;
+  --text-3:       #8A90A2;
+
+  /* Semantic */
+  --green:        #157A3E;
+  --green-bg:     #EAF7F0;
+  --green-mid:    #BBE8D0;
+  --red:          #B91C1C;
+  --red-bg:       #FEF1F1;
+  --red-mid:      #FECACA;
+  --yellow:       #92520A;
+  --yellow-bg:    #FEF6E4;
+  --blue:         #1654C0;
+  --blue-bg:      #EEF3FD;
+
+  /* Radius */
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r:    12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+  --r-2xl:24px;
+
+  /* Shadow */
+  --s-sm: 0 1px 3px rgba(15,17,23,.06), 0 1px 2px rgba(15,17,23,.04);
+  --s:    0 4px 12px rgba(15,17,23,.08), 0 1px 3px rgba(15,17,23,.04);
+  --s-lg: 0 12px 32px rgba(15,17,23,.12), 0 4px 8px rgba(15,17,23,.06);
+  --s-xl: 0 24px 56px rgba(15,17,23,.16);
+
+  /* Motion */
+  --tr:    .18s cubic-bezier(.4,0,.2,1);
+  --tr-lg: .32s cubic-bezier(.4,0,.2,1);
+
+  /* Font */
+  --font: 'Manrope', -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+button { cursor: pointer; font-family: var(--font); }
+input, select, textarea { font-family: var(--font); }
+
+/* ---- Loader ---- */
+.loader-wrap {
+  display: flex; align-items: center; justify-content: center; height: 100vh;
+}
+.loader-ring {
+  width: 40px; height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  animation: spin .65s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ================================================================
+   TOP BAR
+   ================================================================ */
+.top-bar {
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+}
+.top-bar-inner {
+  max-width: 580px; margin: 0 auto;
+  display: flex; align-items: center; gap: 12px;
+  height: 58px; padding: 0 16px;
+}
+.top-bar-brand {
+  display: flex; align-items: center; gap: 9px; flex: 1; min-width: 0;
+}
+.top-bar-icon {
+  width: 32px; height: 32px;
+  background: var(--brand);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.top-bar-text { min-width: 0; }
+.top-bar-title {
+  font-size: .88rem; font-weight: 800;
+  color: var(--text); line-height: 1.2;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  letter-spacing: -.01em;
+}
+.top-bar-sub {
+  font-size: .68rem; color: var(--text-3); line-height: 1.2;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.top-bar-right {
+  display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+}
+.role-pill {
+  background: var(--brand-bg); color: var(--brand);
+  font-size: .68rem; font-weight: 800;
+  padding: 3px 9px; border-radius: 99px;
+  border: 1px solid var(--brand-mid);
+  letter-spacing: .03em; text-transform: uppercase;
+}
+.dt-chip {
+  font-size: .68rem; color: var(--text-3); font-weight: 500;
+}
+.settings-btn {
+  width: 34px; height: 34px;
+  background: none; border: 1.5px solid var(--border);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-3); transition: var(--tr); flex-shrink: 0;
+}
+.settings-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-bg); }
+
+/* ---- Settings dropdown ---- */
+.settings-menu {
+  position: fixed; top: 66px; right: 12px; z-index: 200;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); min-width: 236px;
+  box-shadow: var(--s-lg); overflow: hidden;
+  animation: dropIn .14s ease;
+}
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-5px) scale(.98); }
+  to   { opacity: 1; transform: none; }
+}
+.settings-menu-header {
+  padding: 11px 16px 9px;
+  font-size: .68rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .07em;
+  color: var(--text-3); border-bottom: 1px solid var(--border);
+}
+.settings-item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 11px 16px;
+  background: none; border: none; font-size: .85rem;
+  color: var(--text); text-align: left; transition: background var(--tr);
+  font-weight: 500;
+}
+.settings-item:hover { background: var(--bg); }
+.settings-item + .settings-item { border-top: 1px solid var(--border); }
+.settings-item.danger { color: var(--red); }
+.overlay { position: fixed; inset: 0; z-index: 99; }
+.hidden { display: none !important; }
+
+/* ---- Breadcrumb ---- */
+.breadcrumb-bar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+}
+.breadcrumb-inner {
+  max-width: 580px; margin: 0 auto;
+  display: flex; align-items: center; gap: 4px;
+  height: 36px; overflow-x: auto; white-space: nowrap;
+  scrollbar-width: none;
+}
+.breadcrumb-inner::-webkit-scrollbar { display: none; }
+.bc-item { display: flex; align-items: center; gap: 4px; font-size: .75rem; color: var(--text-3); }
+.bc-item button {
+  background: none; border: none; font-size: .75rem;
+  color: var(--text-3); padding: 0; transition: color var(--tr);
+}
+.bc-item button:hover { color: var(--brand); }
+.bc-item.active button { color: var(--brand); font-weight: 700; }
+.bc-sep { color: var(--border-dark); font-size: .75rem; }
+
+/* ================================================================
+   PAGE LAYOUT
+   ================================================================ */
+#app { min-height: 100vh; }
+.page {
+  max-width: 580px; margin: 0 auto;
+  padding: 22px 16px 100px;
+  animation: pageIn .2s var(--tr);
+}
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+.page-head { margin-bottom: 24px; }
+.page-head-eyebrow {
+  font-size: .7rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .09em; color: var(--brand);
+  margin-bottom: 5px; display: flex; align-items: center; gap: 6px;
+  opacity: .9;
+}
+.page-head-title {
+  font-size: 1.55rem; font-weight: 900; color: var(--text);
+  line-height: 1.2; letter-spacing: -.03em;
+}
+.page-head-sub {
+  margin-top: 5px; font-size: .875rem; color: var(--text-2);
+  line-height: 1.55; font-weight: 500;
+}
+
+/* ================================================================
+   HOME SCREEN
+   ================================================================ */
+.home-hero {
+  text-align: center; padding: 12px 0 28px;
+}
+.home-hero-shield {
+  width: 68px; height: 68px;
+  background: linear-gradient(135deg, var(--brand) 0%, #ff7a3d 100%);
+  border-radius: 20px; margin: 0 auto 18px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 24px rgba(232,80,10,.28);
+}
+.home-hero-title {
+  font-size: 1.6rem; font-weight: 900; color: var(--text);
+  letter-spacing: -.03em; line-height: 1.2; margin-bottom: 8px;
+}
+.home-hero-sub {
+  font-size: .9rem; color: var(--text-2); line-height: 1.6; max-width: 320px; margin: 0 auto;
+  font-weight: 500;
+}
+.home-meta-bar {
+  display: flex; gap: 8px; justify-content: center; margin-top: 16px; flex-wrap: wrap;
+}
+.home-meta-chip {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 99px; padding: 4px 10px;
+  font-size: .71rem; font-weight: 700; color: var(--text-3);
+  letter-spacing: .01em;
+}
+.role-grid { display: grid; gap: 12px; }
+.role-card {
+  background: var(--surface); border: 2px solid var(--border);
+  border-radius: var(--r-2xl); padding: 22px 20px;
+  cursor: pointer; transition: border-color var(--tr), box-shadow var(--tr), transform var(--tr);
+  display: flex; flex-direction: column; gap: 8px; text-align: left;
+  width: 100%;
+}
+.role-card:hover {
+  border-color: var(--brand); box-shadow: var(--s-lg); transform: translateY(-2px);
+}
+.role-card:focus-visible {
+  outline: 3px solid var(--brand); outline-offset: 2px;
+  border-color: var(--brand); box-shadow: var(--s-lg);
+}
+.role-card-header {
+  display: flex; align-items: center; gap: 12px;
+}
+.role-card-icon {
+  width: 46px; height: 46px; border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--brand-bg); color: var(--brand); flex-shrink: 0;
+}
+.role-card-title {
+  font-size: 1.05rem; font-weight: 800; color: var(--text); letter-spacing: -.01em;
+}
+.role-card-tag {
+  display: inline-block; font-size: .68rem; font-weight: 700;
+  letter-spacing: .05em; text-transform: uppercase;
+  background: var(--brand-bg); color: var(--brand);
+  padding: 2px 8px; border-radius: 4px;
+}
+.role-card-desc {
+  font-size: .84rem; color: var(--text-2); line-height: 1.55; font-weight: 500;
+}
+.role-card-cta {
+  margin-top: 6px;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--brand); color: #fff;
+  font-size: .82rem; font-weight: 800;
+  padding: 8px 16px; border-radius: 99px;
+  width: fit-content; transition: background var(--tr);
+}
+.role-card:hover .role-card-cta { background: var(--brand-dark); }
+
+/* ================================================================
+   GUEST FLOW — NEW IDENTITY SCREEN (step 0)
+   ================================================================ */
+.guest-id-hero {
+  background: linear-gradient(145deg, #1a1f2e 0%, #0F1117 100%);
+  border-radius: var(--r-2xl); padding: 28px 24px 24px; margin-bottom: 20px;
+  color: #fff; text-align: center;
+  position: relative; overflow: hidden;
+  box-shadow: var(--s-lg);
+}
+.guest-id-hero::before {
+  content: '';
+  position: absolute; top: -30px; right: -30px;
+  width: 120px; height: 120px;
+  background: rgba(232,80,10,.2);
+  border-radius: 50%;
+}
+.guest-id-hero::after {
+  content: '';
+  position: absolute; bottom: -20px; left: -20px;
+  width: 80px; height: 80px;
+  background: rgba(255,255,255,.05);
+  border-radius: 50%;
+}
+.guest-id-hero-icon {
+  width: 56px; height: 56px;
+  background: var(--brand); border-radius: 16px;
+  margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 20px rgba(232,80,10,.4);
+  position: relative; z-index: 1;
+}
+.guest-id-hero-title {
+  font-size: 1.3rem; font-weight: 900; letter-spacing: -.02em;
+  margin-bottom: 8px; position: relative; z-index: 1;
+}
+.guest-id-hero-sub {
+  font-size: .84rem; opacity: .75; line-height: 1.55;
+  font-weight: 500; position: relative; z-index: 1; max-width: 280px; margin: 0 auto;
+}
+.id-why-row {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px; margin-bottom: 20px;
+}
+@media (max-width: 360px) {
+  .id-why-row { grid-template-columns: 1fr; }
+}
+.id-why-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-lg); padding: 14px 10px;
+  text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.id-why-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.id-why-label {
+  font-size: .7rem; font-weight: 700; color: var(--text-2); line-height: 1.35;
+}
+
+/* ================================================================
+   PROGRESS BAR — GLOBAL STEPPER
+   ================================================================ */
+.flow-stepper {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-lg); padding: 14px 16px; margin-bottom: 18px;
+}
+.flow-stepper-top {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;
+}
+.flow-stepper-label {
+  font-size: .8rem; font-weight: 700; color: var(--text-2);
+}
+.flow-stepper-pct {
+  font-size: .8rem; font-weight: 800; color: var(--brand);
+}
+.flow-bar-outer {
+  height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 10px;
+}
+.flow-bar-inner {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand) 0%, var(--brand-dim) 100%);
+  border-radius: 99px;
+  transition: width .5s cubic-bezier(.4,0,.2,1);
+}
+/* .flow-dots merged into flow-dot block */
+.flow-dot {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .66rem; font-weight: 800; color: var(--text-3);
+  transition: var(--tr); cursor: default; flex-shrink: 0;
+}
+.flow-dot.done { background: var(--green); border-color: var(--green); color: #fff; }
+.flow-dot.active { border-color: var(--brand); color: var(--brand); background: var(--brand-bg); }
+.flow-dots { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+
+/* ================================================================
+   SLIDE CARD — BRIEFING CARD
+   ================================================================ */
+.slide-block {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-2xl); overflow: hidden; margin-bottom: 16px;
+  transition: box-shadow var(--tr);
+}
+.slide-block-head {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.slide-block-num {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: var(--brand); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem; font-weight: 900; flex-shrink: 0; margin-top: 1px;
+}
+.slide-block-title {
+  font-size: 1rem; font-weight: 800; color: var(--text);
+  line-height: 1.35; letter-spacing: -.01em;
+}
+.slide-cards-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; padding: 14px 16px 16px;
+}
+@media (max-width: 430px) { .slide-cards-grid { grid-template-columns: 1fr; } }
+
+/* Individual safety card */
+.safety-card {
+  border-radius: 14px; padding: 14px 13px 13px;
+  display: flex; flex-direction: column; gap: 0;
+  border: 1.5px solid var(--border); background: var(--surface);
+  transition: box-shadow .2s ease, transform .2s ease;
+  min-width: 0; /* критично для grid — иначе длинные слова распирают колонку */
+  overflow: hidden;
+}
+@media (hover: hover) {
+  .safety-card:hover { transform: translateY(-2px); box-shadow: var(--s); }
+}
+.sc-ban  { background: #FFF8F8; border-color: var(--red-mid); }
+.sc-ok   { background: #F5FDF8; border-color: var(--green-mid); }
+.sc-warn { background: var(--yellow-bg); border-color: #fde68a; }
+.sc-rule { background: var(--surface); border-color: var(--border); }
+
+.safety-card-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px; font-size: 22px; line-height: 1;
+}
+.sc-rule .safety-card-icon { background: linear-gradient(135deg, var(--brand-bg), var(--brand-mid)); }
+.sc-ban  .safety-card-icon { background: linear-gradient(135deg, var(--red-bg), var(--red-mid)); }
+.sc-ok   .safety-card-icon { background: linear-gradient(135deg, var(--green-bg), var(--green-mid)); }
+.sc-warn .safety-card-icon { background: linear-gradient(135deg, var(--yellow-bg), #fde68a); }
+
+.safety-card-title {
+  font-size: .86rem; font-weight: 800; color: var(--text);
+  line-height: 1.3; margin-bottom: 4px; letter-spacing: -.01em;
+  overflow-wrap: anywhere; word-break: break-word; hyphens: auto;
+}
+.safety-card-sub {
+  font-size: .74rem; color: var(--text-3); line-height: 1.45;
+  flex: 1; margin-bottom: 10px; font-weight: 500;
+  overflow-wrap: anywhere; word-break: break-word;
+}
+.safety-card-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: .64rem; font-weight: 800; letter-spacing: .06em;
+  padding: 3px 8px; border-radius: 99px; width: fit-content;
+  text-transform: uppercase;
+}
+.sc-rule-badge { background: var(--brand-bg); color: var(--brand); border: 1px solid var(--brand-mid); }
+.sc-ban-badge  { background: var(--red-bg);   color: var(--red);   border: 1px solid var(--red-mid); }
+.sc-ok-badge   { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-mid); }
+.sc-warn-badge { background: var(--yellow-bg); color: var(--yellow); border: 1px solid #fde68a; }
+
+/* Removed: max-height lock on slide body was replaced by card layout */
+
+/* ================================================================
+   CONFIRM ROW (replaces old scroll-and-confirm)
+   ================================================================ */
+.slide-footer {
+  padding: 14px 16px 16px; border-top: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.confirm-row {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--green-bg); border: 1.5px solid var(--green-mid);
+  border-radius: var(--r-sm); padding: 11px 14px; cursor: pointer;
+  transition: background var(--tr), border-color var(--tr), opacity var(--tr);
+}
+.confirm-row.locked {
+  background: var(--bg); border-color: var(--border); opacity: .45; pointer-events: none;
+}
+.confirm-row:not(.locked):hover { background: #d4f0e4; border-color: var(--green); }
+.confirm-check { width: 18px; height: 18px; accent-color: var(--green); flex-shrink: 0; cursor: pointer; }
+.confirm-label {
+  font-size: .85rem; font-weight: 700; color: var(--green);
+  cursor: pointer; user-select: none;
+}
+.confirm-row.locked .confirm-label { color: var(--text-3); }
+
+/* ================================================================
+   MICRO-CHECK
+   ================================================================ */
+.micro-check {
+  background: var(--surface); border: 2px solid var(--brand);
+  border-radius: var(--r-xl); overflow: hidden; margin-bottom: 16px;
+}
+.micro-check-head {
+  background: var(--brand-bg); padding: 14px 18px;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.micro-check-head .micro-check-badge { margin-top: 2px; }
+.micro-check-badge {
+  background: var(--brand); color: #fff;
+  font-size: .7rem; font-weight: 800; letter-spacing: .06em;
+  padding: 3px 9px; border-radius: 99px; text-transform: uppercase;
+  flex-shrink: 0;
+}
+.micro-check-q {
+  font-size: .9rem; font-weight: 700; color: var(--text); line-height: 1.4;
+}
+.micro-check-body { padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; }
+.micro-option {
+  display: flex; align-items: center; gap: 10px;
+  border: 1.5px solid var(--border); border-radius: var(--r);
+  padding: 11px 14px; cursor: pointer; background: var(--surface);
+  transition: border-color var(--tr), background var(--tr);
+}
+.micro-option:hover { border-color: var(--brand); background: var(--brand-bg); }
+.micro-option.selected { border-color: var(--brand); background: var(--brand-bg); }
+.micro-option.correct-ans { border-color: var(--green); background: var(--green-bg); }
+.micro-option.wrong-ans   { border-color: var(--red);   background: var(--red-bg); }
+.micro-radio {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid var(--border-dark); flex-shrink: 0;
+  transition: var(--tr);
+}
+.micro-option.selected .micro-radio { border-color: var(--brand); background: var(--brand); }
+.micro-option.correct-ans .micro-radio { border-color: var(--green); background: var(--green); }
+.micro-option.wrong-ans   .micro-radio { border-color: var(--red); background: var(--red); }
+.micro-option-text { font-size: .85rem; font-weight: 600; color: var(--text); }
+.micro-feedback {
+  padding: 10px 14px; border-radius: var(--r-sm); font-size: .82rem; font-weight: 600;
+  display: flex; align-items: flex-start; gap: 8px;
+  margin-top: 4px; line-height: 1.45;
+}
+.micro-feedback.ok  { background: var(--green-bg); color: var(--green); }
+.micro-feedback.err { background: var(--yellow-bg); color: var(--yellow); }
+.micro-footer { padding: 10px 16px 14px; }
+/* Micro-check entrance animation */
+.micro-check { animation: fadeSlideIn .22s ease both; }
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ================================================================
+   FORMS
+   ================================================================ */
+.form-block {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-xl); padding: 20px; margin-bottom: 16px;
+}
+.form-block-title {
+  font-size: .72rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--text-3);
+  margin-bottom: 16px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.form-group:last-child { margin-bottom: 0; }
+.form-label { font-size: .78rem; font-weight: 700; color: var(--text-2); }
+.form-label .req { color: var(--red); }
+.form-input {
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); padding: 11px 13px;
+  font-size: .9rem; color: var(--text); font-weight: 500;
+  transition: border-color var(--tr), box-shadow var(--tr);
+  width: 100%; outline: none;
+}
+.form-input:focus, .form-input:focus-visible {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(232,80,10,.12);
+  background: var(--surface);
+}
+.form-input::placeholder { color: var(--text-3); font-weight: 400; }
+.form-input[readonly] { color: var(--text-2); cursor: default; opacity: .75; }
+.form-input.err { border-color: var(--red); }
+.form-hint { font-size: .72rem; color: var(--text-3); margin-top: 3px; }
+.form-hint.err { color: var(--red); font-weight: 600; }
+
+/* select */
+.form-select {
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); padding: 11px 13px;
+  font-size: .9rem; color: var(--text); font-weight: 500;
+  transition: border-color var(--tr); width: 100%; outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A90A2' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+  padding-right: 36px;
+}
+.form-select:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(232,80,10,.12); background-color: var(--surface); }
+
+/* ================================================================
+   BUTTONS
+   ================================================================ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 12px 20px; border-radius: var(--r);
+  font-size: .875rem; font-weight: 700; border: none;
+  transition: var(--tr); cursor: pointer; white-space: nowrap;
+  font-family: var(--font); letter-spacing: -.01em;
+}
+.btn-primary { background: var(--brand); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--brand-dark); box-shadow: 0 4px 14px rgba(232,80,10,.35); }
+.btn-secondary { background: var(--surface); color: var(--text); border: 1.5px solid var(--border); }
+.btn-secondary:hover:not(:disabled) { border-color: var(--brand); color: var(--brand); }
+.btn-ghost { background: transparent; color: var(--text-2); border: 1.5px solid transparent; }
+.btn-ghost:hover { color: var(--text); background: var(--bg); border-color: var(--border); }
+.btn-success { background: var(--green); color: #fff; }
+.btn-success:hover:not(:disabled) { background: #0f6333; }
+.btn:disabled { opacity: .38; cursor: not-allowed; }
+.btn:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+.btn-secondary:focus-visible { outline-color: var(--brand); }
+.btn-full { width: 100%; justify-content: center; }
+.btn-lg { padding: 14px 24px; font-size: .95rem; border-radius: var(--r-lg); }
+.btn-sm { padding: 8px 14px; font-size: .78rem; border-radius: var(--r-sm); }
+
+/* Card button */
+.btn-card {
+  background: var(--brand); color: #fff;
+  padding: 8px 16px; border-radius: var(--r-sm);
+  font-size: .8rem; font-weight: 800; border: none; cursor: pointer;
+  transition: background var(--tr), box-shadow var(--tr); white-space: nowrap;
+  font-family: var(--font);
+}
+.btn-card:hover { background: var(--brand-dark); }
+
+/* ---- Sticky bottom ---- */
+.sticky-bottom {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-top: 1px solid var(--border); padding: 12px 16px;
+  z-index: 40; box-shadow: 0 -4px 20px rgba(15,17,23,.06);
+}
+.sticky-bottom-inner {
+  max-width: 580px; margin: 0 auto; display: flex; gap: 10px; align-items: stretch;
+}
+/* На узких экранах — компактные кнопки в нижней панели,
+   чтобы финальный экран (3 кнопки: На главную / Поделиться / Распечатать)
+   не обрезал «Распечатать» справа */
+@media (max-width: 440px) {
+  .sticky-bottom { padding: 10px 12px; }
+  .sticky-bottom-inner { gap: 8px; }
+  .sticky-bottom-inner .btn { padding: 11px 12px; font-size: .82rem; gap: 5px; min-width: 0; }
+}
+@media (max-width: 380px) {
+  .sticky-bottom-inner .btn { padding: 10px 10px; font-size: .78rem; }
+}
+/* 3 кнопки (финальный экран): если не влезают — кнопка «Распечатать» идёт на вторую строку */
+@media (max-width: 400px) {
+  .sticky-bottom-inner { flex-wrap: wrap; }
+  .sticky-bottom-inner .btn-grow { flex-basis: 100%; width: 100%; }
+}
+
+/* ================================================================
+   INFO / ALERT BOXES
+   ================================================================ */
+.info-box {
+  background: var(--blue-bg); border: 1px solid rgba(22,84,192,.15);
+  border-radius: var(--r); padding: 12px 14px;
+  font-size: .83rem; color: var(--blue);
+  display: flex; gap: 9px; align-items: flex-start; margin-bottom: 14px;
+  font-weight: 500; line-height: 1.5;
+}
+.info-box svg { flex-shrink: 0; margin-top: 2px; }
+.warn-box {
+  background: var(--yellow-bg); border: 1px solid rgba(146,82,10,.15);
+  border-radius: var(--r); padding: 12px 14px;
+  font-size: .83rem; color: var(--yellow);
+  display: flex; gap: 9px; align-items: flex-start; margin-bottom: 14px;
+  font-weight: 500; line-height: 1.5;
+}
+.crit-box {
+  background: var(--red-bg); border: 1.5px solid var(--red-mid);
+  border-left: 4px solid var(--red); border-radius: var(--r-sm);
+  padding: 11px 14px; font-size: .83rem; color: var(--red);
+  display: flex; gap: 9px; align-items: flex-start; margin-bottom: 14px;
+  font-weight: 600; line-height: 1.5;
+}
+
+/* ================================================================
+   BADGES / TAGS
+   ================================================================ */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 9px; border-radius: 99px;
+  font-size: .7rem; font-weight: 800; white-space: nowrap;
+  letter-spacing: .02em;
+}
+.badge-green  { background: var(--green-bg);  color: var(--green); }
+.badge-red    { background: var(--red-bg);    color: var(--red); }
+.badge-orange { background: var(--brand-bg);  color: var(--brand); }
+.badge-blue   { background: var(--blue-bg);   color: var(--blue); }
+.badge-gray   { background: var(--bg); color: var(--text-3); border: 1px solid var(--border); }
+.badge-yellow { background: var(--yellow-bg); color: var(--yellow); }
+
+/* ================================================================
+   RECEIPT / PROFILE CARD
+   ================================================================ */
+.receipt-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-xl); overflow: hidden; margin-bottom: 16px;
+  box-shadow: var(--s-sm);
+}
+.receipt-row {
+  display: flex; align-items: baseline; gap: 12px; padding: 11px 16px;
+  border-bottom: 1px solid var(--border); font-size: .875rem;
+}
+.receipt-row:last-child { border-bottom: none; }
+.receipt-key { color: var(--text-3); min-width: 120px; flex-shrink: 0; font-weight: 600; font-size: .8rem; }
+.receipt-val { color: var(--text); font-weight: 700; word-break: break-word; }
+
+/* ================================================================
+   COMPLETION SCREEN
+   ================================================================ */
+.done-hero {
+  background: linear-gradient(150deg, #0a3d20 0%, #157A3E 100%);
+  border-radius: var(--r-2xl); padding: 32px 24px 28px;
+  text-align: center; color: #fff; margin-bottom: 20px;
+  position: relative; overflow: hidden;
+}
+.done-hero::before {
+  content: ''; position: absolute; top: -50px; right: -50px;
+  width: 160px; height: 160px; background: rgba(255,255,255,.05); border-radius: 50%;
+}
+.done-hero::after {
+  content: ''; position: absolute; bottom: -30px; left: -30px;
+  width: 100px; height: 100px; background: rgba(255,255,255,.04); border-radius: 50%;
+}
+.done-hero-ring {
+  width: 68px; height: 68px;
+  background: rgba(255,255,255,.15);
+  border: 2.5px solid rgba(255,255,255,.55);
+  border-radius: 50%; margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 1;
+  animation: popIn .55s cubic-bezier(.175,.885,.32,1.275) .05s both;
+}
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.done-hero-title {
+  font-size: 1.45rem; font-weight: 900; letter-spacing: -.03em;
+  margin-bottom: 6px; position: relative; z-index: 1;
+}
+.done-hero-sub {
+  font-size: .83rem; opacity: .75; line-height: 1.55; font-weight: 500;
+  position: relative; z-index: 1;
+}
+.done-id-block {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.18); border-radius: var(--r);
+  padding: 12px 16px; margin-top: 18px; position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  flex-wrap: wrap;
+}
+.done-id-label { font-size: .67rem; font-weight: 800; opacity: .65; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 2px; }
+.done-id-value { font-size: 1.05rem; font-weight: 900; letter-spacing: .06em; }
+.done-synced-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(255,255,255,.18); color: #fff;
+  font-size: .67rem; font-weight: 800; letter-spacing: .04em;
+  border: 1px solid rgba(255,255,255,.28); border-radius: 99px;
+  padding: 3px 9px; flex-shrink: 0; white-space: nowrap;
+}
+/* Replaces <div style="height:80px"> */
+.page-bottom-spacer { height: 80px; }
+
+/* Print CTA block */
+.done-print-cta {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--brand-bg); border: 1.5px solid var(--brand-mid);
+  border-radius: var(--r-lg); padding: 14px 16px; margin-bottom: 20px;
+}
+.done-print-cta-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+.done-print-cta-text { font-size: .84rem; color: var(--text-2); line-height: 1.55; font-weight: 500; }
+.done-print-cta-text strong { color: var(--brand); font-weight: 800; }
+
+/* ================================================================
+   VERIFICATION BLOCK (done screen)
+   ================================================================ */
+.verif-block {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-xl); overflow: hidden; margin-bottom: 16px;
+  box-shadow: var(--s-sm);
+}
+.verif-block-head {
+  padding: 12px 16px 10px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.verif-block-title {
+  font-size: .72rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--text-3);
+}
+.verif-block-body {
+  display: flex; align-items: stretch; gap: 0;
+}
+.verif-qr {
+  width: 100px; min-height: 100px; flex-shrink: 0;
+  background: var(--bg); border-right: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; padding: 10px;
+}
+.verif-qr svg { width: 80px; height: 80px; }
+.verif-info {
+  flex: 1; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;
+}
+.verif-id-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+}
+.verif-id-val {
+  font-size: 1rem; font-weight: 900; color: var(--text); letter-spacing: .04em; font-family: var(--font);
+}
+.verif-sections-count {
+  display: flex; align-items: center; gap: 6px;
+  font-size: .78rem; font-weight: 700; color: var(--green);
+  background: var(--green-bg); border: 1px solid var(--green-mid);
+  border-radius: 99px; padding: 3px 10px;
+}
+.verif-note {
+  font-size: .74rem; color: var(--text-3); line-height: 1.45; font-weight: 500;
+}
+.btn-copy {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); padding: 5px 11px;
+  font-size: .75rem; font-weight: 700; color: var(--text-2);
+  cursor: pointer; transition: var(--tr); font-family: var(--font);
+  white-space: nowrap; flex-shrink: 0;
+}
+.btn-copy:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-bg); }
+.btn-copy.copied { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+
+/* done-synced-badge — badge внутри done-hero */
+.done-synced-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.22);
+  border-radius: 99px; padding: 4px 11px;
+  font-size: .7rem; font-weight: 700; color: rgba(255,255,255,.92);
+}
+
+/* done-hero-meta — строка с чипами под subtext */
+.done-hero-meta {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: 12px; flex-wrap: wrap; position: relative; z-index: 1;
+}
+.done-sections-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.2);
+  border-radius: 99px; padding: 4px 12px;
+  font-size: .73rem; font-weight: 700; color: rgba(255,255,255,.88);
+}
+
+/* page-bottom-spacer — semantic spacer вместо height:80px inline */
+.page-bottom-spacer { height: 80px; }
+
+/* ================================================================
+   SYNC STATUS CHIP
+   ================================================================ */
+.sync-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: .71rem; font-weight: 700; border-radius: 99px;
+  padding: 4px 10px; white-space: nowrap;
+}
+.sync-chip--ok     { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-mid); }
+.sync-chip--local  { background: var(--yellow-bg); color: var(--yellow); border: 1px solid rgba(146,82,10,.2); }
+.sync-chip--error  { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-mid); }
+.sync-chip-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+}
+.sync-chip--ok .sync-chip-dot     { background: var(--green); }
+.sync-chip--local .sync-chip-dot  { background: var(--yellow); }
+.sync-chip--error .sync-chip-dot  { background: var(--red); }
+
+/* ================================================================
+   receipt-row status — class instead of inline style
+   ================================================================ */
+.receipt-row-status {
+  background: var(--green-bg);
+}
+.receipt-row-status .receipt-key { color: var(--green); }
+.receipt-row-status .receipt-val { color: var(--green); }
+.receipt-status-val { display: flex; align-items: center; gap: 5px; }
+.receipt-status-icon { flex-shrink: 0; color: var(--green); }
+
+/* ================================================================
+   card-emoji — class instead of inline style on getIcon()
+   ================================================================ */
+.card-emoji-wrap {
+  font-size: 22px; line-height: 1; display: block; user-select: none;
+}
+
+/* ================================================================
+   LIST CARDS (departments / installations)
+   ================================================================ */
+.list-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-lg); margin-bottom: 10px;
+  display: flex; align-items: center; padding: 14px 14px 14px 16px; gap: 12px;
+  transition: border-color var(--tr), box-shadow var(--tr); cursor: pointer;
+}
+.list-card:hover { border-color: var(--brand); box-shadow: var(--s-sm); }
+.list-card-body { flex: 1; min-width: 0; }
+.list-card-title { font-size: .9rem; font-weight: 800; color: var(--text); line-height: 1.35; letter-spacing: -.01em; }
+.list-card-sub { font-size: .76rem; color: var(--text-3); margin-top: 3px; font-weight: 500; }
+.list-card-meta { display: flex; align-items: center; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.list-card-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+
+/* ================================================================
+   SEARCH
+   ================================================================ */
+.search-wrap { position: relative; margin-bottom: 16px; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; }
+.search-input {
+  width: 100%; background: var(--surface);
+  border: 1.5px solid var(--border); border-radius: var(--r);
+  padding: 11px 14px 11px 38px; font-size: .875rem; color: var(--text);
+  font-weight: 500; transition: border-color var(--tr), box-shadow var(--tr); outline: none;
+  font-family: var(--font);
+}
+.search-input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(232,80,10,.1); }
+.search-input::placeholder { color: var(--text-3); font-weight: 400; }
+
+/* ================================================================
+   MODULE CARD (employee modules)
+   ================================================================ */
+.module-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-2xl); overflow: hidden; margin-bottom: 16px;
+}
+.module-card-head {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dim) 100%);
+  padding: 22px 20px; color: #fff;
+}
+.module-card-title { font-size: 1.1rem; font-weight: 900; line-height: 1.3; letter-spacing: -.02em; }
+.module-card-sub { margin-top: 6px; font-size: .84rem; opacity: .85; font-weight: 500; }
+.module-card-body { padding: 16px 20px; }
+.module-steps-list { display: flex; flex-direction: column; gap: 10px; }
+.module-step {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; background: var(--bg); border-radius: var(--r);
+  font-size: .875rem; color: var(--text-2);
+}
+.module-step-n {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--border); display: flex; align-items: center; justify-content: center;
+  font-size: .75rem; font-weight: 800; color: var(--text-3); flex-shrink: 0;
+}
+.module-step-label { font-weight: 600; }
+
+/* ================================================================
+   VIDEO PLACEHOLDER
+   ================================================================ */
+.video-placeholder {
+  background: linear-gradient(135deg, #0F1117 0%, #1a1f2e 100%);
+  border-radius: var(--r-xl); padding: 40px 24px;
+  text-align: center; color: #fff; margin: 4px 0 16px;
+  position: relative; overflow: hidden;
+}
+.vp-icon {
+  width: 64px; height: 64px; background: rgba(255,255,255,.1);
+  border: 2px solid rgba(255,255,255,.2); border-radius: 50%;
+  margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; cursor: pointer;
+  transition: background var(--tr), transform var(--tr);
+}
+.vp-icon:hover { background: rgba(232,80,10,.4); transform: scale(1.06); }
+.vp-title { font-size: 1rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -.01em; }
+.vp-sub { font-size: .8rem; opacity: .6; font-weight: 500; margin-bottom: 20px; }
+.vp-timer { margin-bottom: 16px; }
+.vp-timer-bar { height: 4px; background: rgba(255,255,255,.15); border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
+.vp-timer-fill { height: 100%; background: var(--brand); border-radius: 99px; transition: width .1s linear; }
+.vp-timer span { font-size: .8rem; opacity: .7; font-weight: 600; }
+.vp-play-btn {
+  background: var(--brand); color: #fff; border: none; border-radius: var(--r);
+  padding: 11px 22px; font-size: .875rem; font-weight: 700; cursor: pointer;
+  transition: background var(--tr); font-family: var(--font); letter-spacing: -.01em;
+}
+.vp-play-btn:hover { background: var(--brand-dark); }
+.vp-note { font-size: .72rem; opacity: .45; margin-top: 12px; font-weight: 500; }
+
+/* ================================================================
+   TEST COMPONENT
+   ================================================================ */
+.test-question {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-xl); overflow: hidden; margin-bottom: 12px;
+}
+.test-q-head { padding: 14px 16px 12px; border-bottom: 1px solid var(--border); }
+.test-q-num {
+  font-size: .7rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--brand); margin-bottom: 5px;
+}
+.test-q-text { font-size: .9rem; font-weight: 700; color: var(--text); line-height: 1.45; letter-spacing: -.01em; }
+.test-options { display: flex; flex-direction: column; gap: 0; }
+.test-option {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 16px; cursor: pointer; transition: background var(--tr);
+  border-bottom: 1px solid var(--border);
+}
+.test-option:last-child { border-bottom: none; }
+.test-option:hover { background: var(--bg); }
+.test-option.selected { background: var(--brand-bg); }
+.test-option.correct   { background: var(--green-bg); }
+.test-option.wrong     { background: var(--red-bg); }
+.test-option-radio {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid var(--border-dark); flex-shrink: 0; display: flex;
+  align-items: center; justify-content: center; font-size: .7rem; font-weight: 800;
+  transition: var(--tr);
+}
+.test-option.selected .test-option-radio { border-color: var(--brand); background: var(--brand); color: #fff; }
+.test-option.correct   .test-option-radio { border-color: var(--green); background: var(--green); color: #fff; }
+.test-option.wrong     .test-option-radio { border-color: var(--red);   background: var(--red);   color: #fff; }
+.test-option-text { font-size: .85rem; font-weight: 600; color: var(--text); line-height: 1.4; }
+
+/* ================================================================
+   FIRST AID (slide 8)
+   ================================================================ */
+.fa-wrap { padding: 4px 16px 16px; }
+.fa-emergency {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--red-bg); border: 2px solid var(--red);
+  border-radius: var(--r-lg); padding: 14px 18px; margin-bottom: 20px; color: var(--red);
+}
+.fa-emergency-num { font-size: 2.2rem; font-weight: 900; line-height: 1; letter-spacing: -.03em; }
+.fa-emergency-sub { font-size: .78rem; font-weight: 700; opacity: .8; margin-top: 3px; }
+.fa-step { display: flex; gap: 14px; margin-bottom: 4px; }
+.fa-step-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 32px; }
+.fa-step-num {
+  width: 32px; height: 32px; border-radius: 50%; color: #fff;
+  font-size: .85rem; font-weight: 900;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.fa-step-line { width: 2px; flex: 1; min-height: 16px; background: var(--border); margin: 4px 0; }
+.fa-step-body {
+  flex: 1; background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-lg); padding: 12px 14px; margin-bottom: 8px;
+}
+.fa-step-icon { font-size: 24px; margin-bottom: 7px; display: block; }
+.fa-step-title { font-size: .88rem; font-weight: 800; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.fa-step-text { font-size: .78rem; color: var(--text-2); line-height: 1.55; font-weight: 500; }
+
+/* ================================================================
+   FILTER TABS
+   ================================================================ */
+.filter-tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+.filter-tab {
+  padding: 7px 14px; border-radius: 99px; font-size: .78rem; font-weight: 700;
+  border: 1.5px solid var(--border); background: var(--surface); color: var(--text-2);
+  cursor: pointer; transition: var(--tr); font-family: var(--font);
+}
+.filter-tab.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+
+/* ================================================================
+   EMPTY STATE
+   ================================================================ */
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text-3); }
+.empty-icon { font-size: 2.4rem; margin-bottom: 10px; }
+.empty-text { font-size: .875rem; font-weight: 600; }
+
+/* ================================================================
+   NAV ROW
+   ================================================================ */
+.nav-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+
+/* ================================================================
+   PRINT
+   ================================================================ */
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; color: #111; }
+  .print-doc {
+    max-width: 680px; margin: 0 auto;
+    font-family: 'Arial', sans-serif; font-size: 11pt; line-height: 1.5;
+  }
+  .print-header { border-bottom: 2px solid #111; padding-bottom: 14px; margin-bottom: 18px; }
+  .print-org { font-size: 13pt; font-weight: bold; margin-bottom: 3px; }
+  .print-doc-title { font-size: 10pt; color: #555; }
+  .print-id-block {
+    background: #f5f5f5; border: 1px solid #ccc; border-radius: 6px;
+    padding: 10px 14px; margin: 14px 0; font-size: 10pt;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .print-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  .print-table td { padding: 7px 10px; border: 1px solid #ccc; }
+  .print-table td:first-child { background: #f5f5f5; font-weight: bold; width: 200px; }
+  .print-sections { margin-top: 16px; }
+  .print-sections-title { font-weight: bold; margin-bottom: 8px; }
+  .print-section-row { display: flex; gap: 10px; padding: 5px 0; border-bottom: 1px solid #eee; font-size: 10pt; }
+  .sign-area { display: flex; gap: 40px; margin-top: 36px; }
+  .sign-box { flex: 1; border-top: 1px solid #111; padding-top: 5px; font-size: 9.5pt; color: #555; }
+  .print-footer { margin-top: 24px; font-size: 8pt; color: #999; text-align: center; }
+}
+
+/* ================================================================
+   UTILITIES
+   ================================================================ */
+/* btn-grow: flex:1 as a class instead of inline style */
+.btn-grow { flex: 1; }
+/* loading state for buttons */
+.btn.loading { opacity: .65; pointer-events: none; position: relative; }
+.btn.loading::after {
+  content: '';
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+}
+/* form field valid state */
+.form-input.valid { border-color: var(--green); }
+/* phone formatted */
+.form-input[data-phone] { letter-spacing: .03em; }
+
+.mt-4  { margin-top: 4px;  }  .mt-8  { margin-top: 8px;  }
+.mt-12 { margin-top: 12px; }  .mt-16 { margin-top: 16px; }
+.mt-20 { margin-top: 20px; }  .mb-8  { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+.text-sm { font-size: .84rem; } .text-xs { font-size: .75rem; }
+.text-muted { color: var(--text-3); } .fw-700 { font-weight: 700; }
+.flex { display: flex; } .gap-8 { gap: 8px; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.text-center { text-align: center; }
+
+/* ================================================================
+   SPACER UTILITY (replaces height:80px inline)
+   ================================================================ */
+.page-bottom-pad { height: 80px; }
+.mt-wrap-16 { margin-top: 16px; }
+
+/* ================================================================
+   RECEIPT ROW VARIANTS — вместо inline style на статусной строке
+   ================================================================ */
+.receipt-row--success {
+  background: var(--green-bg);
+}
+.receipt-key--success { color: var(--green) !important; }
+.receipt-val--success {
+  color: var(--green) !important;
+  display: flex; align-items: center; gap: 5px;
+}
+
+/* ================================================================
+   DONE SCREEN — sections count chip
+   ================================================================ */
+.done-hero-meta {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin-top: 10px; flex-wrap: wrap; position: relative; z-index: 1;
+}
+.done-sections-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22);
+  border-radius: 99px; padding: 4px 12px;
+  font-size: .75rem; font-weight: 700; color: rgba(255,255,255,.9);
+  letter-spacing: .01em;
+}
+
+/* ================================================================
+   SYNC STATUS — on done screen
+   ================================================================ */
+.sync-status-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.sync-status-row:last-child { border-bottom: none; }
+.sync-status-label {
+  font-size: .8rem; font-weight: 600; color: var(--text-3);
+  flex-shrink: 0;
+}
+
+/* ================================================================
+   FULL TEXT EXPAND (точный текст из Word)
+   ================================================================ */
+.card-fulltext-details {
+  margin-top: 6px; margin-bottom: 6px;
+}
+.card-fulltext-toggle {
+  font-size: .68rem; font-weight: 700; color: var(--text-3);
+  cursor: pointer; list-style: none; display: flex; align-items: center; gap: 4px;
+  user-select: none;
+}
+.card-fulltext-toggle::-webkit-details-marker { display: none; }
+.card-fulltext-toggle::before {
+  content: '▸'; font-size: .65rem; transition: transform .15s;
+}
+details[open] .card-fulltext-toggle::before { transform: rotate(90deg); }
+.card-fulltext-body {
+  margin-top: 5px; font-size: .74rem; color: var(--text-2);
+  line-height: 1.5; font-weight: 500;
+  background: var(--bg); border-radius: var(--r-sm);
+  padding: 8px 10px; border-left: 3px solid var(--border-dark);
+}
+
+/* ================================================================
+   SLIDE 6 — полный заголовок из Word
+   ================================================================ */
+.slide-full-title-wrap {
+  padding: 10px 18px 4px;
+}
+.slide-full-title-note {
+  font-size: .77rem; color: var(--text-3); font-weight: 500;
+  line-height: 1.5; font-style: italic;
+  padding: 8px 12px; background: var(--bg);
+  border-radius: var(--r-sm); border-left: 3px solid var(--border-dark);
+}
+
+
+.step-image-wrap { margin-top: 16px; text-align: center; padding: 8px 0 4px; border-top: 1px solid var(--border); }
+.step-image { max-width: 100%; height: auto; border-radius: var(--r); box-shadow: var(--s); max-height: 420px; object-fit: contain; }
+
+
+.language-switch { display:flex; border:1px solid var(--border-dark); border-radius:8px; padding:2px; gap:2px; flex-shrink:0; }
+.language-switch button { min-width:34px; min-height:32px; padding:4px 6px; border:0; border-radius:5px; background:transparent; color:var(--text-2); font-size:.72rem; font-weight:800; }
+.language-switch button[aria-pressed="true"] { background:var(--brand); color:#fff; }
+.language-switch button:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+@media (max-width:580px) { .top-bar-inner { gap:8px; } .top-bar-right { gap:6px; } .dt-chip { display:none; } }
+@media (max-width:400px) { .top-bar-title { font-size:.74rem; } .top-bar-sub { font-size:.61rem; } .role-pill { display:none!important; } .sticky-bottom-inner { flex-wrap:wrap; } .btn { white-space:normal; text-align:center; } }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="top-bar no-print" id="topBar">
+  <div class="top-bar-inner">
+    <div class="top-bar-brand">
+      <div class="top-bar-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <div class="top-bar-text">
+        <div class="top-bar-title">ИЦ ТМК / РусНИТИ</div>
+        <div class="top-bar-sub">Система контроля соблюдения ТБ</div>
+      </div>
+    </div>
+    <div class="top-bar-right">
+      <div class="language-switch" role="group" aria-label="Язык / Language">
+        <button id="languageRu" type="button" lang="ru" aria-label="Русский" aria-pressed="true">RU</button>
+        <button id="languageEn" type="button" lang="en" aria-label="English" aria-pressed="false">EN</button>
+      </div>
+      <span class="role-pill" id="roleBadge" style="display:none"></span>
+      <span class="dt-chip" id="dtLabel"></span>
+      <button class="settings-btn no-print" id="settingsBtn" type="button" aria-label="Настройки">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="breadcrumb-bar no-print hidden" id="breadcrumbBar">
+  <div class="breadcrumb-inner" id="breadcrumbInner"></div>
+</nav>
+
+<!-- Settings dropdown -->
+<div class="settings-menu hidden no-print" id="settingsMenu">
+  <div class="settings-menu-header">Настройки</div>
+  <button class="settings-item" id="btnResetGuest" type="button">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.31"/></svg>
+    <span data-i18n="restart">Начать заново</span>
+  </button>
+  <button class="settings-item danger" id="btnResetAll" type="button">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+    <span data-i18n="reset">Сбросить все данные</span>
+  </button>
+</div>
+<div class="overlay hidden no-print" id="menuOverlay"></div>
+
+<main id="app"><div class="loader-wrap"><div class="loader-ring"></div></div></main>
+
+<!-- ================================================================
+     DATA: GUEST_INTRO (загружается из guest_intro.js)
+     ================================================================ -->
+<script src="guest_intro.js"></script>
+<script src="guest_intro.en.js"></script>
+<script src="guest-i18n.js"></script>
+<script>
+// Заглушка: GUEST_INTRO загружается из guest_intro.js выше.
+// Этот блок оставлен пустым намеренно.
+window._GUEST_INTRO_LOADED = true;
+/*PLACEHOLDER_START*/
+if (false) { window.GUEST_INTRO = [
+
+  // ── Слайд 1: Территория и рабочее место ────────────────────────────
+  {
+    id: 1,
+    title: "Территория и рабочее место",
+    cards: [
+      {
+        icon: "map",
+        title: "Только через проходную",
+        fullText: "Проход — только через проходную",
+        sub: "Проход — только через проходную",
+        type: "rule"
+      },
+      {
+        icon: "walk",
+        title: "Движение — с сопровождением",
+        fullText: "Осуществлять движение по территории института только в сопровождении представителя института",
+        sub: "Осуществлять движение по территории института только в сопровождении представителя института",
+        type: "rule"
+      },
+      {
+        icon: "car",
+        title: "Соблюдать ПДД на территории",
+        fullText: "При движении по территории института соблюдать правила дорожного движения",
+        sub: "При движении по территории института соблюдать правила дорожного движения",
+        type: "rule"
+      },
+      {
+        icon: "stairs",
+        title: "На лестнице — держаться за перила",
+        fullText: "При подъеме и спуске по лестнице держаться за перила, не отвлекаться на мобильные средства связи и чтение текста на бумажных и электронных носителях",
+        sub: "Держаться за перила, не отвлекаться на телефон и чтение на носителях",
+        type: "rule"
+      },
+      {
+        icon: "phone-off",
+        title: "Телефон на производстве — убрать",
+        fullText: "На производственных площадках не пользоваться мобильными телефонами",
+        sub: "На производственных площадках не пользоваться мобильными телефонами",
+        type: "ban"
+      },
+      {
+        icon: "ban",
+        title: "Алкоголь, наркотики, взрывчатые — запрет",
+        fullText: "Не вносить на территорию института спиртосодержащие напитки, наркотические и взрывчатые",
+        sub: "Не вносить на территорию института спиртосодержащие напитки, наркотические и взрывчатые",
+        type: "ban"
+      }
+    ],
+    microCheck: {
+      q: "Как разрешено передвигаться по территории института?",
+      options: [
+        "Самостоятельно по любому удобному маршруту",
+        "Только в сопровождении представителя института",
+        "С любым сотрудником предприятия",
+        "Только по периметру здания"
+      ],
+      correct: 1,
+      explanation: "Передвижение по территории — только в сопровождении представителя института."
+    }
+  },
+
+  // ── Слайд 2: Опасные факторы электробезопасности ───────────────────
+  {
+    id: 2,
+    title: "Опасные факторы электробезопасности",
+    // Слайд 2 содержит запреты, тип карточки "ban" для всех пунктов
+    cards: [
+      {
+        icon: "zap",
+        title: "Не трогать токоведущие части",
+        fullText: "Не трогать токоведущие части",
+        sub: "Не трогать токоведущие части",
+        type: "ban"
+      },
+      {
+        icon: "tag",
+        title: "Не снимать запретные таблички",
+        fullText: "Не снимать запретные таблички",
+        sub: "Не снимать запретные таблички",
+        type: "ban"
+      },
+      {
+        icon: "fence",
+        title: "Не проходить за ограждения",
+        fullText: "Не проходить за ограждения и предупреждающие знаки, особенно в зоны с электроустановками высокого напряжения",
+        sub: "Не проходить за ограждения и предупреждающие знаки, особенно в зоны с электроустановками высокого напряжения",
+        type: "ban"
+      },
+      {
+        icon: "power",
+        title: "Не включать / выключать оборудование",
+        fullText: "Самостоятельно включать\\выключать любое оборудование, даже если кажется, что это просто кнопка",
+        sub: "Самостоятельно включать/выключать любое оборудование, даже если кажется, что это просто кнопка",
+        type: "ban"
+      },
+      {
+        icon: "alert",
+        title: "Не использовать неисправные розетки",
+        fullText: "Использовать неисправные розетки, провода с поврежденной изоляцией или электроприборы с видимыми дефектами",
+        sub: "Использовать неисправные розетки, провода с поврежденной изоляцией или электроприборы с видимыми дефектами",
+        type: "ban"
+      }
+    ],
+    microCheck: {
+      q: "Что категорически запрещено делать с любым оборудованием?",
+      options: [
+        "Наблюдать за его работой",
+        "Самостоятельно включать или выключать, даже если кажется, что это просто кнопка",
+        "Фотографировать снаружи",
+        "Обходить стороной"
+      ],
+      correct: 1,
+      explanation: "Самостоятельно включать/выключать любое оборудование — запрещено, даже если кажется, что это просто кнопка."
+    }
+  },
+
+  // ── Слайд 3: Поведение на территории ───────────────────────────────
+  {
+    id: 3,
+    title: "Поведение на территории",
+    cards: [
+      {
+        icon: "check",
+        title: "Соблюдать требования по ОТ",
+        fullText: "Соблюдать требования по ОТ",
+        sub: "Соблюдать требования по ОТ",
+        type: "rule"
+      },
+      {
+        icon: "bell",
+        title: "Сообщать о нарушениях немедленно",
+        fullText: "Сообщать о нарушениях немедленно",
+        sub: "Сообщать о нарушениях немедленно",
+        type: "rule"
+      },
+      {
+        icon: "hard-hat",
+        title: "Применять выданные СИЗ",
+        fullText: "Применять выданные СИЗ",
+        sub: "Применять выданные СИЗ",
+        type: "rule"
+      },
+      {
+        icon: "fence",
+        title: "Не заходить за сигнальную разметку",
+        fullText: "Находясь в производственных и лабораторных помещениях не заходить за сигнальную разметку и ограждения, выполнять требования знаков безопасности и информационных табличек",
+        sub: "В производственных и лабораторных помещениях не заходить за сигнальную разметку и ограждения, выполнять требования знаков и табличек",
+        type: "ban"
+      },
+      {
+        icon: "alert",
+        title: "Не прикасаться к движущимся частям",
+        fullText: "Не прикасаться к движущимся частям и перемещающимся механизмам и оборудованию",
+        sub: "Не прикасаться к движущимся частям и перемещающимся механизмам и оборудованию",
+        type: "ban"
+      },
+      {
+        icon: "ban",
+        title: "Не входить в зону подъёмного сооружения",
+        fullText: "Не входить в зону работы подъемного сооружения, самовольно покидать установленный безопасный маршрут и пересекать",
+        sub: "Не входить в зону работы подъемного сооружения, самовольно покидать установленный безопасный маршрут и пересекать",
+        type: "ban"
+      }
+    ],
+    microCheck: {
+      q: "Что необходимо сделать при обнаружении нарушения требований охраны труда?",
+      options: [
+        "Устранить самостоятельно и продолжить работу",
+        "Сообщить о нарушении немедленно",
+        "Записать и сообщить при первом удобном случае",
+        "Ничего — это не входит в обязанности гостя"
+      ],
+      correct: 1,
+      explanation: "О нарушениях требований охраны труда необходимо сообщать немедленно."
+    }
+  },
+
+  // ── Слайд 4: Производственная санитария и личная гигиена ────────────
+  {
+    id: 4,
+    title: "Производственная санитария и личная гигиена",
+    cards: [
+      {
+        icon: "drop",
+        title: "Соблюдать правила личной гигиены",
+        fullText: "Соблюдать правила личной гигиены",
+        sub: "Соблюдать правила личной гигиены",
+        type: "rule"
+      },
+      {
+        icon: "fork",
+        title: "Пища — только в отведённых местах",
+        fullText: "Принимать пищу только в предназначенных для этой цели местах, отвечающих санитарно-гигиеническим требованиям",
+        sub: "Принимать пищу только в предназначенных для этой цели местах, отвечающих санитарно-гигиеническим требованиям",
+        type: "rule"
+      },
+      {
+        icon: "ban",
+        title: "В лабораториях есть — запрещено",
+        fullText: "Прием пищи в производственных подразделениях и лабораториях запрещен",
+        sub: "Прием пищи в производственных подразделениях и лабораториях запрещен",
+        type: "ban"
+      },
+      {
+        icon: "hand",
+        title: "Перед едой — помыть руки",
+        fullText: "Перед приемом пищи необходимо помыть руки",
+        sub: "Перед приемом пищи необходимо помыть руки",
+        type: "ok"
+      },
+      {
+        icon: "flask",
+        title: "После химлаборатории — помыть руки",
+        fullText: "После посещения химической лаборатории необходимо помыть руки",
+        sub: "После посещения химической лаборатории необходимо помыть руки",
+        type: "ok"
+      },
+      {
+        icon: "vest",
+        title: "СИЗ в цехах и лабораториях — обязательно",
+        fullText: "Применять выданные средства индивидуальной защиты при посещении производственных цехов и лабораторий",
+        sub: "Применять выданные средства индивидуальной защиты при посещении производственных цехов и лабораторий",
+        type: "rule"
+      }
+    ],
+    microCheck: {
+      q: "Где разрешён приём пищи?",
+      options: [
+        "В любом свободном помещении",
+        "В лаборатории в короткий перерыв",
+        "Только в предназначенных для этой цели местах, отвечающих санитарно-гигиеническим требованиям",
+        "На рабочем месте при отсутствии реактивов"
+      ],
+      correct: 2,
+      explanation: "Принимать пищу разрешено только в предназначенных для этого местах, отвечающих санитарным требованиям. В лабораториях и производственных подразделениях прием пищи запрещён."
+    }
+  },
+
+  // ── Слайд 5: Средства индивидуальной защиты ────────────────────────
+  {
+    id: 5,
+    title: "Средства индивидуальной защиты",
+    cards: [
+      {
+        icon: "vest",
+        title: "СИЗ при посещении цехов и лабораторий",
+        fullText: "Применять выданные средства индивидуальной защиты при посещении производственных цехов и лабораторий",
+        sub: "Применять выданные средства индивидуальной защиты при посещении производственных цехов и лабораторий",
+        type: "rule"
+      },
+      {
+        icon: "glasses",
+        title: "Защитные очки",
+        fullText: "Защитные очки — защита глаз от пыли, брызг, механических частиц",
+        sub: "Защита глаз от пыли, брызг, механических частиц",
+        type: "rule"
+      },
+      {
+        icon: "hard-hat",
+        title: "Защитная каска",
+        fullText: "Защитная каска — защита головы от ударов, падающих предметов",
+        sub: "Защита головы от ударов, падающих предметов",
+        type: "rule"
+      },
+      {
+        icon: "headphones",
+        title: "Противошумные вкладыши / наушники",
+        fullText: "Противошумные вкладыши / наушники — защита слуха в зоне с уровнем шума > 80 дБ",
+        sub: "Защита слуха в зоне с уровнем шума > 80 дБ",
+        type: "rule"
+      },
+      {
+        icon: "vest",
+        title: "Сигнальный жилет",
+        fullText: "Сигнальный жилет — повышенная видимость в зонах движения техники",
+        sub: "Повышенная видимость в зонах движения техники",
+        type: "rule"
+      },
+      {
+        icon: "glove",
+        title: "Перчатки",
+        fullText: "Перчатки — защита рук при контакте с оборудованием",
+        sub: "Защита рук при контакте с оборудованием",
+        type: "rule"
+      }
+    ],
+    microCheck: {
+      q: "Когда необходимо применять выданные средства индивидуальной защиты?",
+      options: [
+        "Только при видимой опасности",
+        "По собственному усмотрению",
+        "При посещении производственных цехов и лабораторий",
+        "Только при работе с химическими веществами"
+      ],
+      correct: 2,
+      explanation: "Выданные СИЗ необходимо применять при посещении производственных цехов и лабораторий."
+    }
+  },
+
+  // ── Слайд 6: Источники опасности ───────────────────────────────────
+  {
+    id: 6,
+    // Заголовок из Word — полный, используется как title слайда
+    title: "Источники опасности на территории организации",
+    // fullTitle — точная формулировка из Word для отображения в развёрнутом виде
+    fullTitle: "Источники опасности, действующие на всех работников, находящихся на территории организации, идентифицированные в ходе оценки профессиональных рисков",
+    cards: [
+      {
+        icon: "ice",
+        title: "Скользкие поверхности",
+        fullText: "Скользкие, обледенелые, мокрые опорные поверхности",
+        sub: "Скользкие, обледенелые, мокрые опорные поверхности",
+        type: "ban"
+      },
+      {
+        icon: "zap",
+        title: "Электрический ток",
+        fullText: "Электрический ток",
+        sub: "Электрический ток",
+        type: "ban"
+      },
+      {
+        icon: "alert",
+        title: "Насилие от враждебных лиц",
+        fullText: "Насилие от враждебно-настроенных работников/третьих лиц",
+        sub: "Насилие от враждебно-настроенных работников/третьих лиц",
+        type: "ban"
+      },
+      {
+        icon: "monitor",
+        title: "ПЭВМ и офисная техника",
+        fullText: "ПЭВМ и иная офисная и бытовая техника",
+        sub: "ПЭВМ и иная офисная и бытовая техника",
+        type: "warn"
+      },
+      {
+        icon: "body",
+        title: "Вынужденная рабочая поза",
+        fullText: "Вынужденная рабочая поза",
+        sub: "Вынужденная рабочая поза",
+        type: "ban"
+      },
+      {
+        icon: "eye",
+        title: "Напряжение органов зрения",
+        fullText: "Высокий уровень напряжения органов зрения",
+        sub: "Высокий уровень напряжения органов зрения",
+        type: "warn"
+      }
+    ]
+    // Слайд 6 — информационный, без micro-check
+  },
+
+  // ── Слайд 7: Действия при несчастном случае ─────────────────────────
+  {
+    id: 7,
+    title: "Действия при несчастном случае",
+    cards: [
+      {
+        icon: "search",
+        title: "Оценка обстановки",
+        fullText: "Оценка обстановки и устранение угрожающих факторов",
+        sub: "Оценка обстановки и устранение угрожающих факторов",
+        type: "rule"
+      },
+      {
+        icon: "heart",
+        title: "Оказание первой помощи",
+        fullText: "Оказание первой помощи",
+        sub: "Оказание первой помощи",
+        type: "rule"
+      },
+      {
+        icon: "phone",
+        title: "Вызов скорой помощи",
+        fullText: "Вызов скорой помощи",
+        sub: "Вызов скорой помощи",
+        type: "ok"
+      },
+      {
+        icon: "user",
+        title: "Сообщить представителю института",
+        fullText: "Сообщить о случившемся представителю института",
+        sub: "Сообщить о случившемся представителю института",
+        type: "rule"
+      }
+    ],
+    microCheck: {
+      q: "Каким должен быть первый шаг при обнаружении пострадавшего?",
+      options: [
+        "Немедленно начать оказывать первую помощь",
+        "Позвонить руководителю",
+        "Оценить обстановку и устранить угрожающие факторы",
+        "Эвакуировать всех из помещения"
+      ],
+      correct: 2,
+      explanation: "Первый шаг — оценка обстановки и устранение угрожающих факторов. Только после обеспечения собственной безопасности можно приступать к помощи пострадавшему."
+    }
+  },
+
+  // ── Слайд 8: Первая помощь ──────────────────────────────────────────
+  // Word содержит изображение алгоритма первой помощи.
+  // Отображение: веб-версия алгоритма (firstAid: true → renderFirstAid()).
+  // При наличии оригинального изображения переключить на:
+  // image: "first_aid.jpg", imageAlt: "Алгоритм оказания первой помощи"
+  {
+    id: 8,
+    title: "Первая помощь",
+    firstAid: true,
+    cards: []
+  }
+]; } /* end placeholder — данные загружаются из guest_intro.js */
+</script>
+
+<!-- DATA: DEPARTMENTS + INSTALLATIONS (не используются в режиме командированных) -->
+<script>
+window.DEPARTMENTS = [
+  { id: "dept_01", name: "Отдел разработки новой продукции, сопутствующих технологий и материалов", shortName: "Отдел разработки", icon: "🔬" },
+  { id: "dept_02", name: "Лаборатория термической обработки", shortName: "Лаб. термообработки", icon: "🔥" },
+  { id: "dept_03", name: "Сектор химико-технологических испытаний", shortName: "Хим.-техн. испытания", icon: "⚗️" },
+  { id: "dept_04", name: "Сектор испытаний антикоррозионных и консервационных покрытий", shortName: "Антикорроз. покрытия", icon: "🛡️" },
+  { id: "dept_05", name: "Сектор коррозионных испытаний", shortName: "Коррозионные испытания", icon: "🧪" },
+  { id: "dept_06", name: "Сектор механических испытаний", shortName: "Мех. испытания", icon: "⚙️" },
+  { id: "dept_07", name: "Сектор испытаний химического состава и металлографии", shortName: "Хим. состав и металлография", icon: "🔭" },
+  { id: "dept_08", name: "Центр сварочных технологий", shortName: "Центр сварки", icon: "🔧" }
+];
+window.INSTALLATIONS = {
+  "dept_01": [],
+  "dept_02": [],
+  "dept_03": [],
+  "dept_04": [
+    { id: "inst_04_01", name: "Камера ультрафиолетовая УФК-1" },
+    { id: "inst_04_02", name: "Автоклав AMAR 20L" },
+    { id: "inst_04_03", name: "Сверлильный станок Hitachi B16RM" },
+    { id: "inst_04_04", name: "Жидкостный термостат LOIP LT-224a" }
+  ],
+  "dept_05": [],
+  "dept_06": [],
+  "dept_07": [],
+  "dept_08": []
+};
+</script>
+
+<!-- EMP_MODULES data (anticorrosion dept) -->
+<script>
+window.EMP_MODULES = window.EMP_MODULES || {};
+window.EMP_MODULES["dept_04"] = [
+  {
+    id: "inst_04_01", name: "Камера ультрафиолетовая УФК-1", iot: "ИОТ-28", icon: "🔆",
+    slides: [
+      { id:1, title:"Опасные факторы при работе с УФК-1", cards:[
+        {icon:"zap",  title:"УФ-излучение",     sub:"Прямой контакт с УФ-лучами опасен для кожи и глаз",   type:"ban"},
+        {icon:"alert",title:"Озон",             sub:"Образуется при работе УФ-лампы — опасен при вдыхании",type:"ban"},
+        {icon:"flask",title:"Пары ртути",       sub:"При нарушении целостности УФ-лампы",                  type:"ban"},
+        {icon:"zap",  title:"Поражение током",  sub:"Опасность при неисправном оборудовании",              type:"ban"},
+        {icon:"fire", title:"Воспламенение",    sub:"Не помещать горючие материалы внутрь камеры",         type:"ban"},
+        {icon:"burn", title:"Термические ожоги",sub:"Не касаться нагретых частей оборудования",            type:"ban"}
+      ]},
+      { id:2, title:"Перед началом работы", cards:[
+        {icon:"vest",   title:"Надеть спецодежду",               sub:"Специальная одежда обязательна перед началом работы",     type:"rule"},
+        {icon:"check",  title:"Проверить оборудование",          sub:"КИП, сигнализацию, шнур, вилку, розетку, заземление",    type:"rule"},
+        {icon:"book",   title:"Изучить инструкцию",              sub:"Ознакомиться с инструкцией по эксплуатации производителя",type:"rule"},
+        {icon:"brush",  title:"Подготовить рабочее место",       sub:"Убрать лишние предметы, проверить пути эвакуации",       type:"rule"},
+        {icon:"shield", title:"Проверить СИЗ",                   sub:"Осмотр исправности, комплектности и пригодности СИЗ",    type:"rule"},
+        {icon:"ban",    title:"Не работать при несоответствиях", sub:"Прекратить при любых нарушениях требований ОТ",          type:"ban"}
+      ]},
+      { id:3, title:"Во время работы с УФК-1", cards:[
+        {icon:"ban",   title:"Избегать прямого УФ-излучения",    sub:"Не смотреть на работающую лампу без защиты",             type:"ban"},
+        {icon:"ban",   title:"Горючие материалы — запрет",       sub:"Не помещать воспламеняющиеся вещества внутрь камеры",   type:"ban"},
+        {icon:"ban",   title:"Не разбирать самостоятельно",      sub:"Самостоятельная разборка оборудования запрещена",       type:"ban"},
+        {icon:"power", title:"Вилку — за корпус",                sub:"Не выключать вилку из розетки, держась за шнур",        type:"rule"},
+        {icon:"alert", title:"Осторожно при замене лампы",       sub:"Не допускать нарушения целостности УФ-лампы",           type:"rule"},
+        {icon:"check", title:"Соблюдать инструкцию производителя",sub:"Эксплуатация строго по руководству завода-изготовителя",type:"rule"}
+      ]},
+      { id:4, title:"Аварийная ситуация: разбилась УФ-лампа", cards:[
+        {icon:"alert", title:"Немедленно остановить работу",              sub:"Прекратить все работы при нарушении герметичности лампы", type:"rule"},
+        {icon:"flask", title:"Обработать место раствором",                sub:"20% хлорным железом или мыльно-содовым раствором",        type:"rule"},
+        {icon:"user",  title:"Сообщить руководителю",                     sub:"Немедленно уведомить начальника сектора",                 type:"rule"},
+        {icon:"phone", title:"При необходимости — вызвать помощь",        sub:"Скорая: 103, пожарная: 101, единая служба: 112",          type:"ok"}
+      ]},
+      { id:5, title:"По окончании работы", cards:[
+        {icon:"power", title:"Отключить электропитание",  sub:"Выключить камеру и отключить от сети",                 type:"rule"},
+        {icon:"brush", title:"Убрать рабочее место",      sub:"Привести оборудование и рабочее место в порядок",      type:"rule"},
+        {icon:"drop",  title:"Вымыть руки",               sub:"Тёплой водой с мылом после окончания работы",          type:"ok"},
+        {icon:"bell",  title:"Сообщить о недостатках",    sub:"Известить руководителя о всех замеченных нарушениях",  type:"rule"}
+      ]}
+    ],
+    test: [
+      {q:"Что необходимо сделать при нарушении целостности УФ-лампы?", options:["Продолжить работу","Остановить и обработать место раствором для нейтрализации ртути","Заменить лампу самостоятельно","Проветрить и продолжить"], correct:1},
+      {q:"Какие материалы запрещено помещать внутрь камеры УФК-1?", options:["Металлические образцы","Пластиковые контейнеры","Воспламеняющиеся и горючие материалы","Стеклянные изделия"], correct:2},
+      {q:"Как правильно отключить камеру УФК-1 от розетки?", options:["Потянуть за шнур","Взяться за корпус вилки","Выдернуть резким движением","Не важно"], correct:1},
+      {q:"Что из перечисленного является опасным фактором при работе с УФК-1?", options:["Яркий видимый свет","УФ-излучение и образование озона","Шум вентилятора","Вибрация корпуса"], correct:1},
+      {q:"Какую группу по электробезопасности должен иметь работник УФК-1?", options:["Группу III","Группу II","Группу I","Без группы"], correct:2}
+    ]
+  },
+  {
+    id: "inst_04_02", name: "Автоклав AMAR 20L", iot: "ИОТ-36", icon: "🔬",
+    slides: [
+      { id:1, title:"Опасные факторы автоклава AMAR 20L", cards:[
+        {icon:"fire",  title:"Высокая температура",     sub:"До 250 °C — риск термических ожогов",                     type:"ban"},
+        {icon:"alert", title:"Избыточное давление",     sub:"Парогазовая волна, брызги, осколки при срыве крышки",     type:"ban"},
+        {icon:"flask", title:"Опасные газы (N₂, CO₂)", sub:"Удушение при превышении допустимой концентрации",         type:"ban"},
+        {icon:"zap",   title:"Поражение током",         sub:"Опасность при неисправном оборудовании",                  type:"ban"},
+        {icon:"alert", title:"Механические травмы",     sub:"При неконтролируемом опускании/подъёме крышки",           type:"ban"},
+        {icon:"flask", title:"Кислотные растворы",      sub:"Нельзя заливать растворы на основе кислот",              type:"ban"}
+      ]},
+      { id:2, title:"Перед началом работы на автоклаве", cards:[
+        {icon:"vest",   title:"Полный комплект СИЗ",          sub:"Спецодежда, очки, фартук, брезентовые рукавицы",    type:"rule"},
+        {icon:"search", title:"Осмотр автоклава",             sub:"Корпус, рукава подачи/отвода газов, уплотнение",   type:"rule"},
+        {icon:"zap",    title:"Проверить заземление",         sub:"Наличие защитного заземления корпуса",              type:"rule"},
+        {icon:"check",  title:"Проверить индикаторы панели",  sub:"Работоспособность индикаторных лампочек",           type:"rule"},
+        {icon:"ban",    title:"Не работать при дефектах",     sub:"Трещины, течи, неисправность манометра — стоп",     type:"ban"}
+      ]},
+      { id:3, title:"Безопасная работа с автоклавом", cards:[
+        {icon:"ban",   title:"Дверь открыта во время работы",       sub:"Помещение с автоклавом не запирается",           type:"rule"},
+        {icon:"ban",   title:"Газ — только при закреплённой крышке",sub:"N₂, CO₂ — только при полностью закрытом автоклаве",type:"ban"},
+        {icon:"ban",   title:"Не открывать крышку под давлением",   sub:"Категорически запрещено при наличии давления",   type:"ban"},
+        {icon:"check", title:"Затяжка болтов «крест-накрест»",      sub:"В два подхода: вручную, затем с ключом",         type:"rule"},
+        {icon:"alert", title:"Контроль давления по манометру",      sub:"Следить за давлением в течение всего процесса", type:"rule"}
+      ]},
+      { id:4, title:"Остановка при аварии — автоклав", cards:[
+        {icon:"ban",   title:"Давление > 25 МПа — немедленно стоп",sub:"Превышение нормы на 1 МПа — аварийная остановка",type:"ban"},
+        {icon:"ban",   title:"Трещины, течи, утечки газа — стоп",  sub:"Немедленно остановить и сообщить руководителю",  type:"ban"},
+        {icon:"ban",   title:"Неисправный манометр — стоп",        sub:"Без пломбы, просроченная поверка — не работать", type:"ban"},
+        {icon:"phone", title:"Скорая: 103, пожарная: 101/112",     sub:"При несчастном случае или пожаре",               type:"ok"}
+      ]},
+      { id:5, title:"Окончание работы на автоклаве", cards:[
+        {icon:"alert", title:"Охладить до 40 °C перед открытием", sub:"Открывать крышку только после полного остывания",     type:"rule"},
+        {icon:"check", title:"Клапаны сброса — открыты",          sub:"С момента открытия оставить клапаны открытыми",       type:"rule"},
+        {icon:"power", title:"Отключить электропитание",          sub:"После завершения всех операций",                      type:"rule"},
+        {icon:"brush", title:"Очистить внутреннюю поверхность",   sub:"Слить раствор, очистить автоклав изнутри",             type:"rule"},
+        {icon:"drop",  title:"Вымыть руки",                       sub:"Тёплой водой с мылом после работы",                   type:"ok"}
+      ]}
+    ],
+    test: [
+      {q:"При каком условии запрещается открывать крышку автоклава?", options:["При температуре выше 20 °C","При наличии давления в автоклаве","При работающем нагреве","В обоих случаях: давление и нагрев"], correct:1},
+      {q:"Какой комплект СИЗ обязателен при работе с автоклавом?", options:["Только очки","Очки и перчатки","Спецодежда, очки, термофартук и брезентовые рукавицы","Защитная каска"], correct:2},
+      {q:"До какой температуры необходимо охладить автоклав перед открытием?", options:["До 100 °C","До 60 °C","До 40 °C","До комнатной температуры"], correct:2},
+      {q:"Как выполняется затяжка болтов крышки автоклава?", options:["По кругу в одну сторону","Крест-накрест в два подхода","Произвольно","Только вручную"], correct:1},
+      {q:"Что необходимо сделать при обнаружении трещины или течи в автоклаве?", options:["Продолжить работу, но снизить давление","Немедленно остановить и сообщить руководителю","Затянуть болты и продолжить","Добавить давление для уплотнения"], correct:1}
+    ]
+  },
+  {
+    id: "inst_04_03", name: "Сверлильный станок Hitachi B16RM", iot: "ИОТ-22", icon: "🔩",
+    slides: [
+      { id:1, title:"Опасные факторы сверлильного станка", cards:[
+        {icon:"alert", title:"Вращающийся шпиндель",    sub:"Захват одежды, волос, незащищённых частей тела",     type:"ban"},
+        {icon:"zap",   title:"Поражение током",         sub:"Опасность при неисправной изоляции",                  type:"ban"},
+        {icon:"alert", title:"Металлическая стружка",   sub:"Порезы и травмы глаз при отлёте стружки",             type:"ban"},
+        {icon:"fire",  title:"Нагрев инструмента",      sub:"Термические ожоги при контакте с нагретым сверлом",   type:"ban"}
+      ]},
+      { id:2, title:"Требования безопасности", cards:[
+        {icon:"glasses", title:"Защитные очки обязательны",        sub:"Защита глаз от стружки при сверлении",          type:"rule"},
+        {icon:"ban",     title:"Перчатки при сверлении — запрет",  sub:"Перчатки могут намотать на вращающийся шпиндель",type:"ban"},
+        {icon:"check",   title:"Надёжно закрепить заготовку",      sub:"Детали крепятся тисками или прижимами",         type:"rule"},
+        {icon:"ban",     title:"Не держать деталь руками",         sub:"При сверлении деталь держать запрещено",        type:"ban"},
+        {icon:"brush",   title:"Убирать стружку только щёткой",    sub:"Не сдувать и не снимать руками",               type:"ok"}
+      ]}
+    ],
+    test: [
+      {q:"Почему при работе на сверлильном станке запрещено использовать перчатки?", options:["Снижают чувствительность","Могут намотать на вращающийся шпиндель","Мешают управлению","Не соответствуют нормативам"], correct:1},
+      {q:"Как нужно убирать металлическую стружку после сверления?", options:["Руками","Сдуванием","Только щёткой","Тряпкой"], correct:2},
+      {q:"Что обязательно надеть перед работой на сверлильном станке?", options:["Перчатки","Защитные очки","Каску","Наушники"], correct:1},
+      {q:"Как необходимо закреплять заготовку перед сверлением?", options:["Держать в руках","Фиксировать тисками или прижимами","Прислонить к упору","Любым удобным способом"], correct:1},
+      {q:"Что является опасным фактором при работе со сверлильным станком?", options:["Шум электродвигателя","Вращающийся шпиндель и стружка","Вибрация стола","Все перечисленное"], correct:3}
+    ]
+  },
+  {
+    id: "inst_04_04", name: "Жидкостный термостат LOIP LT-224a", iot: "ИОТ-31", icon: "🌡️",
+    slides: [
+      { id:1, title:"Опасные факторы термостата", cards:[
+        {icon:"fire",  title:"Высокая температура жидкости", sub:"Ожоги при контакте с горячей рабочей жидкостью",    type:"ban"},
+        {icon:"zap",   title:"Поражение током",              sub:"При неисправном электропитании",                    type:"ban"},
+        {icon:"flask", title:"Пары рабочей жидкости",        sub:"Испарение при нагреве, опасность при вдыхании",     type:"ban"},
+        {icon:"alert", title:"Давление",                     sub:"Избыточное давление при заблокированной циркуляции",type:"ban"}
+      ]},
+      { id:2, title:"Правила безопасной работы", cards:[
+        {icon:"check", title:"Проверить уровень жидкости",      sub:"Перед включением убедиться в достаточном уровне", type:"rule"},
+        {icon:"vest",  title:"СИЗ — термостойкие перчатки",     sub:"При работе с горячей жидкостью и образцами",     type:"rule"},
+        {icon:"ban",   title:"Не открывать крышку под нагревом",sub:"Только после полного остывания рабочей жидкости", type:"ban"},
+        {icon:"drop",  title:"Вымыть руки после работы",        sub:"Тёплой водой с мылом",                           type:"ok"}
+      ]}
+    ],
+    test: [
+      {q:"Что нужно проверить перед включением жидкостного термостата?", options:["Чистоту поверхности","Уровень рабочей жидкости","Температуру в помещении","Дату последней поверки"], correct:1},
+      {q:"Когда допускается открывать крышку термостата?", options:["В любое время","Только при температуре ниже 100 °C","Только после полного остывания жидкости","Во время работы"], correct:2},
+      {q:"Какие СИЗ необходимы при работе с горячими образцами в термостате?", options:["Только очки","Термостойкие перчатки","Перчатки хозяйственные","СИЗ не нужны"], correct:1},
+      {q:"Что является источником опасности при работе с термостатом?", options:["Шум насоса","Высокая температура жидкости и поражение током","Вибрация корпуса","Яркий свет дисплея"], correct:1},
+      {q:"Что нужно сделать сразу после окончания работы с термостатом?", options:["Оставить включённым для следующего пользователя","Отключить, убрать место и вымыть руки","Слить рабочую жидкость","Снять крышку для проветривания"], correct:1}
+    ]
+  }
+];
+</script>
+
+<!-- ================================================================
+     EMPLOYEE MODULE: emp_module.js
+     ================================================================ -->
+<script>
+(function() {
+  'use strict';
+  var K_MOD_PROG = 'tmk_mod_prog';
+  function lsG(k, fb) { try { var v=localStorage.getItem(k); if(v===null)return(fb!==undefined?fb:null); return JSON.parse(v); } catch(e) { return(fb!==undefined?fb:null); } }
+  function lsS(k, v)  { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
+  function esc(s)     { return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function $(sel)     { return document.querySelector(sel); }
+  function pad(n)     { return String(n).padStart(2,'0'); }
+  function fmtDt(d)   { return pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes()); }
+  function scrollTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+
+  var ICON_MAP = {
+    'zap':'⚡','alert':'⚠️','flask':'🧪','fire':'🔥','burn':'🌡️','check':'✅','book':'📖',
+    'brush':'✨','shield':'🛡️','vest':'🦺','search':'🔍','ban':'🚫','power':'🔌',
+    'glasses':'🥽','hard-hat':'⛑️','drop':'💧','bell':'🔔','phone':'📞','user':'👤',
+    'heart':'❤️','glove':'🧤','headphones':'🎧','monitor':'🖥️','body':'🧍','eye':'👁️',
+    'map':'📍','bulb':'💡','fence':'🚧','tag':'🏷️','fork':'🍽️','hand':'🤲',
+    'ice':'🌨️','ok':'✅'
+  };
+  function getIcon(name) { return '<span class="card-emoji-wrap">'+(ICON_MAP[name]||'•')+'</span>'; }
+
+  var CARD_TYPE = {
+    'rule': { label:'ПРАВИЛО',  cls:'sc-rule' },
+    'ban':  { label:'ЗАПРЕТ',   cls:'sc-ban'  },
+    'warn': { label:'ОПАСНОСТЬ',cls:'sc-warn' },
+    'ok':   { label:'ОК',       cls:'sc-ok'   }
+  };
+
+  function renderSafetyCard(card) {
+    var t = CARD_TYPE[card.type] || CARD_TYPE['rule'];
+    var badgeSvg = card.type==='ban'
+      ? '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>'
+      : card.type==='ok'
+        ? '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
+        : card.type==='warn'
+          ? '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
+          : '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+    return '<div class="safety-card '+t.cls+'">'
+      +'<div class="safety-card-icon">'+getIcon(card.icon)+'</div>'
+      +'<div class="safety-card-title">'+esc(card.title)+'</div>'
+      +'<div class="safety-card-sub">'+esc(card.sub)+'</div>'
+      +'<div class="safety-card-badge '+t.cls+'-badge">'+badgeSvg+' '+t.label+'</div>'
+      +'</div>';
+  }
+
+  function getModuleData(instId) {
+    if (!window.EMP_MODULES) return null;
+    for (var deptId in window.EMP_MODULES) {
+      var arr = window.EMP_MODULES[deptId];
+      for (var i=0;i<arr.length;i++) { if(arr[i].id===instId) return arr[i]; }
+    }
+    return null;
+  }
+
+  function getProg(instId) {
+    var all = lsG(K_MOD_PROG, {});
+    return all[instId] || { slides:[], testScore:null, testDone:false, done:false, dt:null, videoWatched:false };
+  }
+  function saveProg(instId, prog) {
+    var all = lsG(K_MOD_PROG, {});
+    all[instId] = prog;
+    lsS(K_MOD_PROG, all);
+  }
+
+  window.showEmployeeModuleFull = function(dept, instObj, onBack) {
+    var instId = instObj ? instObj.id : null;
+    var modData = instId ? getModuleData(instId) : null;
+    if (!modData) { showModulePlaceholder(dept, instObj, onBack); return; }
+    showModuleVideo(modData, dept, onBack);
+  };
+
+  function buildProgressHtml(mod, prog) {
+    var totalSteps = 1 + mod.slides.length + 1;
+    var doneSteps = (prog.videoWatched?1:0) + prog.slides.length + (prog.testDone?1:0);
+    var pct = Math.round(doneSteps / totalSteps * 100);
+    var dotsHtml = '<div class="flow-dot '+(prog.videoWatched?'done':'active')+'" title="Видео">'+(prog.videoWatched?'✓':'▶')+'</div>';
+    for (var di=0;di<mod.slides.length;di++) {
+      var isDone = prog.slides.indexOf(mod.slides[di].id)!==-1;
+      dotsHtml += '<div class="flow-dot '+(isDone?'done':'')+'" title="Слайд '+(di+1)+'">'+(isDone?'✓':(di+1))+'</div>';
+    }
+    dotsHtml += '<div class="flow-dot '+(prog.testDone?'done':'')+'" title="Тест" style="'+(prog.testDone?'':'background:var(--blue-bg);border-color:var(--blue);color:var(--blue)')+'">📝</div>';
+    return '<div class="flow-stepper"><div class="flow-stepper-top"><span class="flow-stepper-label">Прогресс</span><span class="flow-stepper-pct">'+pct+'%</span></div><div class="flow-bar-outer"><div class="flow-bar-inner" style="width:'+pct+'%"></div></div><div class="flow-dots">'+dotsHtml+'</div></div>';
+  }
+
+  function showModuleVideo(mod, dept, onBack) {
+    var app = document.getElementById('app');
+    var prog = getProg(mod.id);
+    if (window._tmkSetBreadcrumb) {
+      window._tmkSetBreadcrumb([
+        {label:'Главная', onClick:function(){if(window._tmkShowHome)window._tmkShowHome();}},
+        {label:'Отдел',   onClick:function(){if(window._tmkShowEmpDept)window._tmkShowEmpDept();}},
+        {label:mod.icon+' '+mod.name}
+      ]);
+    }
+    var videoHtml = '';
+    if (mod.video && (mod.video.indexOf('youtube')!==-1||mod.video.indexOf('youtu.be')!==-1)) {
+      videoHtml = '<div style="position:relative;padding-bottom:56.25%;height:0;border-radius:var(--r-lg);overflow:hidden">'
+        +'<iframe src="'+esc(mod.video)+'" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen></iframe>'
+        +'</div>'
+        +'<div class="info-box mt-8" style="margin-bottom:0">Просмотрите видео до конца, затем нажмите кнопку ниже.</div>';
+    } else if (mod.video) {
+      videoHtml = '<video id="modVideo" controls controlsList="nodownload" style="width:100%;border-radius:var(--r-lg);background:#000;max-height:260px">'
+        +'<source src="'+esc(mod.video)+'" type="video/mp4"></video>';
+    } else {
+      videoHtml = '<div class="video-placeholder">'
+        +'<div class="vp-icon" id="vpIcon">▶</div>'
+        +'<div class="vp-title">'+esc(mod.name)+'</div>'
+        +'<div class="vp-sub">Видеоинструктаж по установке</div>'
+        +'<div class="vp-timer hidden" id="vpTimer"><div class="vp-timer-bar"><div class="vp-timer-fill" id="vpFill"></div></div><span id="vpSec">5</span> сек. до завершения</div>'
+        +'<button class="vp-play-btn" id="vpPlayBtn" type="button">▶ Начать просмотр</button>'
+        +'<div class="vp-note">Видео будет добавлено позже. Нажмите для демо.</div>'
+        +'</div>';
+    }
+
+    app.innerHTML = '<div class="page">'
+      +'<div class="page-head"><div class="page-head-eyebrow"><span>'+mod.icon+'</span> '+esc(mod.iot)+'</div>'
+      +'<div class="page-head-title">'+esc(mod.name)+'</div>'
+      +'<div class="page-head-sub">Видеоинструктаж по установке</div></div>'
+      +buildProgressHtml(mod,prog)
+      +'<div class="slide-block" style="overflow:hidden">'+videoHtml+'</div>'
+      +'<div style="height:80px"></div></div>'
+      +'<div class="sticky-bottom no-print"><div class="sticky-bottom-inner">'
+      +'<button class="btn btn-secondary" id="btnBackV">← Назад</button>'
+      +'<button class="btn btn-primary" id="btnWatched" class="btn-grow" '+(prog.videoWatched?'':'disabled')+'>К слайдам →</button>'
+      +'</div></div>';
+
+    var playBtn = $('#vpPlayBtn');
+    var vpIcon  = $('#vpIcon');
+    if (playBtn) {
+      playBtn.addEventListener('click', function() {
+        playBtn.style.display='none';
+        var vpTimer = $('#vpTimer'); if(vpTimer) vpTimer.classList.remove('hidden');
+        var vpFill = $('#vpFill'); var vpSec = $('#vpSec');
+        var total=5, elapsed=0;
+        var iv = setInterval(function() {
+          elapsed++;
+          if(vpFill) vpFill.style.width=(elapsed/total*100)+'%';
+          if(vpSec) vpSec.textContent=total-elapsed;
+          if(elapsed>=total) {
+            clearInterval(iv);
+            var p=getProg(mod.id); p.videoWatched=true; saveProg(mod.id,p);
+            var btn=$('#btnWatched'); if(btn) btn.removeAttribute('disabled');
+            if(vpIcon) vpIcon.textContent='✓';
+            var tm=$('#vpTimer'); if(tm) tm.innerHTML='<span style="color:var(--green);font-weight:800;">✓ Просмотрено</span>';
+          }
+        },1000);
+      });
+    }
+    $('#btnWatched').addEventListener('click', function(){ showModuleSlide(mod,0,dept,onBack); });
+    $('#btnBackV').addEventListener('click', function(){ if(onBack) onBack(); });
+    scrollTop();
+  }
+
+  function showModuleSlide(mod, slideIdx, dept, onBack) {
+    var app = document.getElementById('app');
+    var prog = getProg(mod.id);
+    var slide = mod.slides[slideIdx];
+    var confirmed = prog.slides.indexOf(slide.id)!==-1;
+
+    if (window._tmkSetBreadcrumb) {
+      window._tmkSetBreadcrumb([
+        {label:'Главная', onClick:function(){if(window._tmkShowHome)window._tmkShowHome();}},
+        {label:'Отдел',   onClick:function(){if(window._tmkShowEmpDept)window._tmkShowEmpDept();}},
+        {label:mod.icon+' '+mod.name, onClick:function(){showModuleVideo(mod,dept,onBack);}},
+        {label:'Слайд '+(slideIdx+1)}
+      ]);
+    }
+
+    var cardsHtml = '<div class="slide-cards-grid">';
+    for (var ci=0;ci<slide.cards.length;ci++) { cardsHtml+=renderSafetyCard(slide.cards[ci]); }
+    cardsHtml += '</div>';
+
+    app.innerHTML = '<div class="page">'
+      +'<div class="page-head"><div class="page-head-eyebrow">'+mod.icon+' '+esc(mod.name)+'</div>'
+      +'<div class="page-head-title">'+esc(slide.title)+'</div></div>'
+      +buildProgressHtml(mod,prog)
+      +'<div class="slide-block">'
+      +'<div class="slide-block-head"><div class="slide-block-num">'+(slideIdx+1)+'</div><div class="slide-block-title">'+esc(slide.title)+'</div></div>'
+      +'<div>'+cardsHtml+'</div>'
+      +'<div class="slide-footer">'
+      +'<div class="confirm-row '+(confirmed?'':'locked')+'" id="confirmRow">'
+      +'<input type="checkbox" class="confirm-check" id="confirmCheck"'+(confirmed?' checked':'')+(confirmed?'':' disabled')+'>'
+      +'<label class="confirm-label" for="confirmCheck">Ознакомлен с разделом</label>'
+      +'</div></div></div>'
+      +'<div style="height:80px"></div></div>'
+      +'<div class="sticky-bottom no-print"><div class="sticky-bottom-inner">'
+      +'<button class="btn btn-secondary" id="btnPrev">← Назад</button>'
+      +'<button class="btn btn-primary" id="btnNext" class="btn-grow" '+(confirmed?'':'disabled')+'>'
+      +(slideIdx<mod.slides.length-1?'Следующий →':'К тесту →')
+      +'</button></div></div>';
+
+    var confirmRow=$('#confirmRow'); var confirmChk=$('#confirmCheck'); var btnNext=$('#btnNext');
+    if (!confirmed) {
+      setTimeout(function() {
+        confirmRow.classList.remove('locked'); confirmChk.removeAttribute('disabled');
+      }, 300);
+    }
+    confirmChk.addEventListener('change', function() {
+      if (this.checked) {
+        var p=getProg(mod.id);
+        if(p.slides.indexOf(slide.id)===-1){p.slides.push(slide.id);saveProg(mod.id,p);}
+        btnNext.removeAttribute('disabled');
+      } else { btnNext.setAttribute('disabled',''); }
+    });
+    $('#btnPrev').addEventListener('click', function() {
+      if(slideIdx>0) showModuleSlide(mod,slideIdx-1,dept,onBack);
+      else showModuleVideo(mod,dept,onBack);
+    });
+    $('#btnNext').addEventListener('click', function() {
+      if(slideIdx<mod.slides.length-1) showModuleSlide(mod,slideIdx+1,dept,onBack);
+      else showModuleTest(mod,dept,onBack);
+    });
+    scrollTop();
+  }
+
+  function showModuleTest(mod, dept, onBack) {
+    var app = document.getElementById('app');
+    var questions = mod.test.slice(0, 5);
+    var answers = new Array(questions.length).fill(-1);
+
+    if (window._tmkSetBreadcrumb) {
+      window._tmkSetBreadcrumb([
+        {label:'Главная', onClick:function(){if(window._tmkShowHome)window._tmkShowHome();}},
+        {label:mod.icon+' '+mod.name, onClick:function(){showModuleSlide(mod,0,dept,onBack);}},
+        {label:'Тест'}
+      ]);
+    }
+
+    function renderTest() {
+      var qHtml = '';
+      for (var i=0;i<questions.length;i++) {
+        var q=questions[i]; var userA=answers[i];
+        var optHtml = '';
+        for (var j=0;j<q.options.length;j++) {
+          var sel = userA===j ? 'selected' : '';
+          optHtml+='<label class="test-option '+sel+'" data-qi="'+i+'" data-oi="'+j+'">'
+            +'<span class="test-option-radio">'+(userA===j?'•':'')+'</span>'
+            +'<span class="test-option-text">'+esc(q.options[j])+'</span>'
+            +'</label>';
+        }
+        qHtml+='<div class="test-question"><div class="test-q-head"><div class="test-q-num">Вопрос '+(i+1)+' из '+questions.length+'</div><div class="test-q-text">'+esc(q.q)+'</div></div><div class="test-options">'+optHtml+'</div></div>';
+      }
+      var allAnswered = answers.every(function(a){return a!==-1;});
+      app.innerHTML='<div class="page">'
+        +'<div class="page-head"><div class="page-head-eyebrow">'+mod.icon+' '+esc(mod.name)+'</div>'
+        +'<div class="page-head-title">Итоговый тест</div>'
+        +'<div class="page-head-sub">Необходимо правильно ответить на 4 из 5 вопросов</div></div>'
+        +'<div class="warn-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Выберите один правильный ответ на каждый вопрос.</div>'
+        +qHtml
+        +'<div style="height:80px"></div></div>'
+        +'<div class="sticky-bottom no-print"><div class="sticky-bottom-inner">'
+        +'<button class="btn btn-secondary" id="btnBackSlides">← Слайды</button>'
+        +'<button class="btn btn-primary" id="btnSubmit" class="btn-grow" '+(allAnswered?'':'disabled')+'>Завершить тест</button>'
+        +'</div></div>';
+
+      app.querySelectorAll('.test-option').forEach(function(el) {
+        el.addEventListener('click', function() {
+          var qi=parseInt(this.dataset.qi); var oi=parseInt(this.dataset.oi);
+          answers[qi]=oi; renderTest();
+        });
+      });
+      var sub=$('#btnSubmit');
+      if(sub) sub.addEventListener('click', function(){ submitTest(); });
+      $('#btnBackSlides').addEventListener('click', function(){ showModuleSlide(mod,0,dept,onBack); });
+    }
+
+    function submitTest() {
+      var correct=0;
+      for(var i=0;i<questions.length;i++){if(answers[i]===questions[i].correct)correct++;}
+      var passed=correct>=4;
+      showTestResult(mod,questions,answers,correct,passed,dept,onBack);
+    }
+    renderTest(); scrollTop();
+  }
+
+  function showTestResult(mod, questions, answers, correct, passed, dept, onBack) {
+    var app = document.getElementById('app');
+    var reviewHtml='';
+    for(var i=0;i<questions.length;i++){
+      var q=questions[i]; var userA=answers[i]; var isOk=userA===q.correct;
+      var optHtml='';
+      for(var j=0;j<q.options.length;j++){
+        var cls=''; if(j===q.correct)cls='correct'; else if(j===userA&&!isOk)cls='wrong';
+        optHtml+='<div class="test-option '+cls+'" style="pointer-events:none">'
+          +'<span class="test-option-radio">'+(j===q.correct?'✓':(j===userA&&!isOk?'✗':'○'))+'</span>'
+          +'<span class="test-option-text">'+esc(q.options[j])+'</span>'
+          +'</div>';
+      }
+      reviewHtml+='<div class="test-question"><div class="test-q-head"><div class="test-q-num">Вопрос '+(i+1)+'</div><div class="test-q-text">'+esc(q.q)+'</div></div><div class="test-options">'+optHtml+'</div></div>';
+    }
+    if(passed){
+      var p=getProg(mod.id); p.testScore=correct; p.testDone=true; p.done=true; p.dt=fmtDt(new Date()); saveProg(mod.id,p);
+    }
+    app.innerHTML='<div class="page">'
+      +'<div style="text-align:center;padding:16px 0 8px">'
+      +(passed
+        ?'<div style="width:72px;height:72px;background:var(--green-bg);border:2.5px solid var(--green);border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;color:var(--green);animation:popIn .5s cubic-bezier(.175,.885,.32,1.275) both"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>'
+        :'<div style="width:72px;height:72px;background:var(--red-bg);border:2.5px solid var(--red);border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;color:var(--red)"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>')
+      +'<div class="page-head-title">'+(passed?'Тест пройден! 🎉':'Тест не пройден')+'</div>'
+      +'<div style="margin-top:6px"><span class="badge '+(passed?'badge-green':'badge-red')+'">'+correct+' из '+questions.length+' правильных ответов</span></div>'
+      +'</div>'
+      +(!passed?'<div class="warn-box mt-12">Для прохождения необходимо не менее 4 правильных ответов. Повторите слайды.</div>':'')
+      +'<div style="margin:16px 0">'+reviewHtml+'</div>'
+      +'<div style="height:80px"></div></div>'
+      +'<div class="sticky-bottom no-print"><div class="sticky-bottom-inner">'
+      +'<button class="btn btn-secondary" id="btnRetry">'+(passed?'← Слайды':'↩ Повторить')+'</button>'
+      +(passed?'<button class="btn btn-success" id="btnCert" class="btn-grow">🏆 Сертификат</button>':'')
+      +'</div></div>';
+
+    $('#btnRetry').addEventListener('click', function(){ showModuleSlide(mod,0,dept,onBack); });
+    var btnCert=$('#btnCert');
+    if(btnCert) btnCert.addEventListener('click', function(){ showModuleCert(mod,correct,dept,onBack); });
+    scrollTop();
+  }
+
+  function showModuleCert(mod, score, dept, onBack) {
+    var app = document.getElementById('app');
+    var prog = getProg(mod.id);
+    var empProf = lsG('tmk_emp_prof',{});
+    var dt = prog.dt || fmtDt(new Date());
+    if (window._tmkSetBreadcrumb) {
+      window._tmkSetBreadcrumb([
+        {label:'Главная', onClick:function(){if(window._tmkShowHome)window._tmkShowHome();}},
+        {label:mod.icon+' '+mod.name, onClick:function(){showModuleSlide(mod,0,dept,onBack);}},
+        {label:'Сертификат'}
+      ]);
+    }
+    app.innerHTML='<div class="page">'
+      +'<div style="text-align:center;padding:12px 0 20px">'
+      +'<div style="width:72px;height:72px;background:var(--green-bg);border:2.5px solid var(--green);border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;color:var(--green);animation:popIn .5s cubic-bezier(.175,.885,.32,1.275) both"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>'
+      +'<div class="page-head-title">Обучение завершено!</div>'
+      +'<div style="margin-top:6px"><span class="badge badge-green">✓ Все разделы и тест пройдены</span></div>'
+      +'</div>'
+      +'<div class="receipt-card mt-16">'
+      +'<div class="receipt-row"><span class="receipt-key">Установка</span><span class="receipt-val">'+mod.icon+' '+esc(mod.name)+'</span></div>'
+      +'<div class="receipt-row"><span class="receipt-key">Инструкция</span><span class="receipt-val">'+esc(mod.iot)+'</span></div>'
+      +'<div class="receipt-row"><span class="receipt-key">Результат теста</span><span class="receipt-val" style="color:var(--green)">'+score+' из 5 правильных ✓</span></div>'
+      +'<div class="receipt-row"><span class="receipt-key">Дата</span><span class="receipt-val">'+esc(dt)+'</span></div>'
+      +'</div>'
+      +'<div class="form-block">'
+      +'<div class="form-block-title">Данные сотрудника</div>'
+      +'<div class="form-group"><label class="form-label" for="cname">ФИО <span class="req">*</span></label><input class="form-input" id="cname" type="text" placeholder="Иванов Иван Иванович" value="'+esc(empProf.name||'')+'"></div>'
+      +'<div class="form-group"><label class="form-label" for="ctab">Табельный номер</label><input class="form-input" id="ctab" type="text" placeholder="12345" value="'+esc(empProf.tab||'')+'"></div>'
+      +'<div class="form-group"><label class="form-label">Подразделение</label><input class="form-input" type="text" value="'+esc(dept)+'" readonly></div>'
+      +'<div class="form-group"><label class="form-label">Дата и время</label><input class="form-input" type="text" value="'+esc(dt)+'" readonly></div>'
+      +'</div>'
+      +'<div class="info-box">Укажите ФИО и распечатайте сертификат для подтверждения прохождения.</div>'
+      +'<div style="height:80px"></div></div>'
+      +'<div class="sticky-bottom no-print"><div class="sticky-bottom-inner">'
+      +'<button class="btn btn-secondary" id="btnHomeC">На главную</button>'
+      +'<button class="btn btn-primary" id="btnPrintC" class="btn-grow">🖨️ Распечатать</button>'
+      +'</div></div>';
+
+    ['cname','ctab'].forEach(function(id) {
+      var el=document.getElementById(id);
+      if(el) el.addEventListener('input', function(){
+        var p2=lsG('tmk_emp_prof',{}); if(id==='cname')p2.name=this.value.trim(); if(id==='ctab')p2.tab=this.value.trim(); lsS('tmk_emp_prof',p2);
+      });
+    });
+    $('#btnHomeC').addEventListener('click', function(){ if(window._tmkShowHome) window._tmkShowHome(); });
+    $('#btnPrintC').addEventListener('click', function(){
+      var nm=document.getElementById('cname').value.trim();
+      if(!nm){alert('Пожалуйста, укажите ФИО.'); return;}
+      var p2=lsG('tmk_emp_prof',{}); p2.name=nm; lsS('tmk_emp_prof',p2);
+      var w=window.open('','_blank','width=820,height=700');
+      w.document.write('<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>Сертификат</title>'
+        +'<style>body{font-family:Arial,sans-serif;font-size:11pt;color:#111;max-width:680px;margin:36px auto;padding:0 20px;line-height:1.5}'
+        +'h1{font-size:16pt;margin:0 0 3px}.sub{color:#555;font-size:11pt;margin-bottom:18px}.divider{border-top:2px solid #111;margin:16px 0}'
+        +'.t{width:100%;border-collapse:collapse;margin-bottom:16px}.t td{padding:7px 10px;border:1px solid #ccc}'
+        +'.t td:first-child{background:#f5f5f5;font-weight:bold;width:200px}'
+        +'.sign-area{display:flex;gap:40px;margin-top:36px}.sign-box{flex:1;border-top:1px solid #111;padding-top:5px;font-size:9.5pt;color:#555}'
+        +'.footer{margin-top:24px;font-size:8pt;color:#999;text-align:center}</style>'
+        +'</head><body>'
+        +'<h1>ООО «ИЦ ТМК»</h1><div class="sub">Сертификат о прохождении инструктажа по охране труда</div><div class="divider"></div>'
+        +'<table class="t">'
+        +'<tr><td>ФИО</td><td><strong>'+nm+'</strong></td></tr>'
+        +'<tr><td>Табельный №</td><td>'+(document.getElementById('ctab').value||'—')+'</td></tr>'
+        +'<tr><td>Установка</td><td>'+mod.name+'</td></tr>'
+        +'<tr><td>Инструкция</td><td>'+mod.iot+'</td></tr>'
+        +'<tr><td>Результат</td><td><strong style="color:green">'+score+' из 5 правильных</strong></td></tr>'
+        +'<tr><td>Дата</td><td>'+dt+'</td></tr>'
+        +'<tr><td>Статус</td><td><strong style="color:green">✓ Обучение пройдено</strong></td></tr>'
+        +'</table>'
+        +'<div class="sign-area"><div class="sign-box">Подпись сотрудника<br><br>_________________________</div><div class="sign-box">Подпись ответственного<br><br>_________________________</div></div>'
+        +'<div class="footer">Документ сформирован автоматически. ООО «ИЦ ТМК» — система обучения по охране труда.</div>'
+        +'</body></html>');
+      w.document.close(); w.focus(); setTimeout(function(){w.print();},500);
+    });
+    scrollTop();
+  }
+
+  function showModulePlaceholder(dept, instObj, onBack) {
+    var app = document.getElementById('app');
+    var instName = instObj ? instObj.name : 'Установка';
+    var prof = lsG('tmk_emp_prof',{});
+    app.innerHTML='<div class="page">'
+      +'<div class="page-head"><div class="page-head-title">'+esc(instName)+'</div>'
+      +(prof&&prof.name?'<div class="page-head-sub">Сотрудник: <strong>'+esc(prof.name)+'</strong></div>':'')
+      +'</div>'
+      +'<div class="module-card"><div class="module-card-head"><div class="module-card-title">'+esc(dept)+'</div><div class="module-card-sub">'+esc(instName)+'</div></div>'
+      +'<div class="module-card-body"><div class="info-box">Контент модуля находится в разработке.</div>'
+      +'<div class="module-steps-list"><div class="module-step"><div class="module-step-n">1</div><div class="module-step-label">Карточки безопасности</div></div><div class="module-step"><div class="module-step-n">2</div><div class="module-step-label">Проверочный тест</div></div><div class="module-step"><div class="module-step-n">3</div><div class="module-step-label">Сертификат</div></div></div>'
+      +'</div></div><div style="height:80px"></div></div>'
+      +'<div class="sticky-bottom no-print"><div class="sticky-bottom-inner">'
+      +'<button class="btn btn-secondary" id="btnBackI2">← Назад</button>'
+      +'<button class="btn btn-ghost" id="btnHomeM2">На главную</button>'
+      +'</div></div>';
+    document.getElementById('btnBackI2').addEventListener('click', function(){ if(onBack) onBack(); });
+    document.getElementById('btnHomeM2').addEventListener('click', function(){ if(window._tmkShowHome) window._tmkShowHome(); });
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+})();
+</script>
+
+<!-- ================================================================
+     APP.JS — Main SPA controller
+     ================================================================ -->
+<script src="guest-app.js"></script>
+
+</body>
+</html>
