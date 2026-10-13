@@ -59,9 +59,6 @@
   "<div class=\"slide-block-title\">Вводный видеоинструктаж</div>": "<div class=\"slide-block-title\">Safety induction video</div>",
   "<div class=\"vp-title\">Система контроля соблюдения ТБ</div>": "<div class=\"vp-title\">Safety compliance system</div>",
   "<div class=\"vp-sub\">ООО «ИЦ ТМК» / АО «РусНИТИ» — обязательный вводный инструктаж</div>": "<div class=\"vp-sub\">TMK Research Centre LLC / RusNITI JSC — mandatory safety induction</div>",
-  "<div class=\"vp-timer hidden\" id=\"vpTimer\"><div class=\"vp-timer-bar\"><div class=\"vp-timer-fill\" id=\"vpFill\" style=\"width:0%\"></div></div><span id=\"vpSec\">8</span> сек.</div>": "<div class=\"vp-timer hidden\" id=\"vpTimer\"><div class=\"vp-timer-bar\"><div class=\"vp-timer-fill\" id=\"vpFill\" style=\"width:0%\"></div></div><span id=\"vpSec\">8</span> sec.</div>",
-  "<button class=\"vp-play-btn\" id=\"vpPlayBtn\" type=\"button\">▶&nbsp;&nbsp;Начать просмотр</button>": "<button class=\"vp-play-btn\" id=\"vpPlayBtn\" type=\"button\">▶&nbsp;&nbsp;Start watching</button>",
-  "<div class=\"vp-note\">Видеоролик будет подключён позже. Нажмите для демонстрации прохождения.</div>": "<div class=\"vp-note\">The video will be added later. Click to try the completion demo.</div>",
   "<div class=\"info-box\" style=\"margin-bottom:0\"><svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\"/></svg>Необходимо просмотреть видеоролик полностью перед переходом к разделам инструктажа</div>": "<div class=\"info-box\" style=\"margin-bottom:0\"><svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\"/></svg>You must watch the entire video before continuing to the induction sections</div>",
   "<button class=\"btn btn-secondary\" id=\"btnBackV\" type=\"button\">← Назад</button>": "<button class=\"btn btn-secondary\" id=\"btnBackV\" type=\"button\">← Back</button>",
   "<button class=\"btn btn-primary btn-grow\" id=\"btnToSlides\" type=\"button\" disabled>К инструктажу →</button>": "<button class=\"btn btn-primary btn-grow\" id=\"btnToSlides\" type=\"button\" disabled>Continue to induction →</button>",
@@ -142,6 +139,21 @@
   "Сбросить ВСЕ данные приложения?": "Reset ALL application data?",
   " разделов ТБ": " safety sections"
 };
+  Object.assign(english, {
+  "Видеоинструктаж по охране труда": "Safety induction video",
+  "Ваш браузер не поддерживает видео. Откройте инструктаж в современном браузере.": "Your browser does not support video. Open the induction in a modern browser.",
+  "Загрузка видео…": "Loading video…",
+  "Не удалось загрузить видео. Проверьте подключение к интернету и повторите попытку.": "The video could not be loaded. Check your internet connection and try again.",
+  "Повторить загрузку": "Retry loading",
+  "Просмотрите видео полностью, чтобы перейти к разделам. Субтитры включаются в меню плеера.": "Watch the full video to continue to the sections. Turn on subtitles in the player menu.",
+  "Видео просмотрено. Можно перейти к разделам.": "Video completed. You can continue to the sections.",
+  "Нажмите ▶ для просмотра.": "Press ▶ to watch.",
+  "Перемотка вперёд доступна в уже просмотренной части видео.": "You can seek forward within the part you have already watched.",
+  "Просмотр видео…": "Video playing…",
+  "Просмотр приостановлен.": "Video paused.",
+  "Просмотрите видео полностью, чтобы продолжить.": "Watch the full video to continue.",
+  "Видео недоступно.": "Video unavailable."
+});
   var current = 'ru';
   try { current = JSON.parse(localStorage.getItem('tmk_lang')) === 'en' ? 'en' : 'ru'; } catch(e) {}
   var purposes = ['Командировка','Деловой визит','Поставка / получение','Технический осмотр','Другое'];

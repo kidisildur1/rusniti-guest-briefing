@@ -9,7 +9,8 @@
     ROLE:     'tmk_role',
     G_PROG:   'tmk_guest_prog',   // { done, steps:[], startedAt }
     G_PROF:   'tmk_guest_prof',   // { name, org, phone, purpose, dt, sessionId }
-    G_VID:    'tmk_video_ok',     // boolean — видеоинструктаж просмотрен
+    G_VID:    'tmk_guest_video_v1_ok', // Completion of the actual video; legacy demo completion does not count.
+    G_VPOS:   'tmk_guest_video_v1_progress', // Per-language playback position and watched range
     E_PROF:   'tmk_emp_prof',
     E_DEPT:   'tmk_emp_dept',
     E_INST:   'tmk_emp_inst',
@@ -166,8 +167,14 @@
 
   /* ---- State ---- */
   var S = { screen:'home', guestStep:0, dept:null, inst:null, switching:false, quizDrafts:{}, landingDraft:null };
-  var videoTimer = null, videoElapsed = 0, videoPlaying = false;
-  function stopVideoTimer() { clearInterval(videoTimer); videoTimer = null; }
+  var videoCleanup = null;
+  function stopVideo() {
+    if (videoCleanup) { var cleanup = videoCleanup; videoCleanup = null; cleanup(); }
+  }
+  window.addEventListener('pagehide', stopVideo);
+  window.addEventListener('pageshow', function(event) {
+    if (event.persisted && S.screen === 'video') showVideo();
+  });
 
   /* ---- Top bar ---- */
   function updateTopBar() {
@@ -237,7 +244,7 @@
   function showHome() { showLanding(); } // алиас для обратной совместимости
 
   function showLanding() {
-    stopVideoTimer();
+    stopVideo();
     S.screen = 'landing'; hideBreadcrumb(); updateTopBar();
     var savedProf = S.landingDraft || lsG(K.G_PROF, {});
     if (!savedProf || typeof savedProf !== 'object') savedProf = {};
@@ -317,94 +324,141 @@
      VIDEO — Обязательный видеоролик
      ================================================================ */
   function showVideo() {
-    stopVideoTimer();
+    stopVideo();
     S.screen = 'video'; hideBreadcrumb(); updateTopBar();
-    var intro = getIntro();
-    var totalSlides = intro.length;
+    var lang = window.GuestI18n.language();
+    var base = 'media/safety-' + lang;
+    var totalSlides = getIntro().length;
     var totalDots = '';
     for (var n = 1; n <= totalSlides; n++) {
-      totalDots += tr('<div class="flow-dot" title="Раздел ')+n+'">'+n+'</div>';
+      totalDots += tr('<div class="flow-dot" title="Раздел ') + n + '">' + n + '</div>';
     }
-
     appEl().innerHTML =
       '<div class="page">'
-      // ── Progress stepper
       +'<div class="flow-stepper">'
-      +tr('<div class="flow-stepper-top"><span class="flow-stepper-label">Шаг 1 из ')+(totalSlides+1)+tr(' — Видеоинструктаж</span><span class="flow-stepper-pct" id="vpPct">0%</span></div>')
+      +tr('<div class="flow-stepper-top"><span class="flow-stepper-label">Шаг 1 из ') + (totalSlides + 1)
+      +tr(' — Видеоинструктаж</span><span class="flow-stepper-pct" id="vpPct">0%</span></div>')
       +'<div class="flow-bar-outer"><div class="flow-bar-inner" id="vpBar" style="width:0%"></div></div>'
-      +tr('<div class="flow-dots"><div class="flow-dot active" id="vpDot" title="Видео">▶</div>')+totalDots+'</div>'
-      +'</div>'
-      // ── Video block
+      +tr('<div class="flow-dots"><div class="flow-dot active" id="vpDot" title="Видео">▶</div>') + totalDots + '</div></div>'
       +'<div class="slide-block">'
-      +'<div class="slide-block-head">'
-      +'<div class="slide-block-num" style="font-size:.85rem;letter-spacing:0">▶</div>'
-      +tr('<div class="slide-block-title">Вводный видеоинструктаж</div>')
-      +'</div>'
-      +'<div class="video-placeholder">'
-      +'<div class="vp-icon" id="vpIcon">▶</div>'
-      +tr('<div class="vp-title">Система контроля соблюдения ТБ</div>')
-      +tr('<div class="vp-sub">ООО «ИЦ ТМК» / АО «РусНИТИ» — обязательный вводный инструктаж</div>')
-      +tr('<div class="vp-timer hidden" id="vpTimer"><div class="vp-timer-bar"><div class="vp-timer-fill" id="vpFill" style="width:0%"></div></div><span id="vpSec">8</span> сек.</div>')
-      +tr('<button class="vp-play-btn" id="vpPlayBtn" type="button">▶&nbsp;&nbsp;Начать просмотр</button>')
-      +tr('<div class="vp-note">Видеоролик будет подключён позже. Нажмите для демонстрации прохождения.</div>')
-      +'</div>'
-      +'<div class="slide-footer">'
-      +tr('<div class="info-box" style="margin-bottom:0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Необходимо просмотреть видеоролик полностью перед переходом к разделам инструктажа</div>')
-      +'</div></div>'
+      +'<div class="slide-block-head"><div class="slide-block-num">▶</div>'
+      +tr('<div class="slide-block-title">Вводный видеоинструктаж</div>') + '</div>'
+      +'<video id="guestVideo" class="guest-video" controls playsinline preload="metadata"'
+      +' src="' + base + '.mp4" poster="' + base + '.jpg" aria-label="' + esc(tr('Видеоинструктаж по охране труда')) + '">'
+      +'<track kind="subtitles" src="' + base + '.vtt" srclang="' + lang + '" label="' + (lang === 'en' ? 'English' : 'Русский') + '">'
+      +esc(tr('Ваш браузер не поддерживает видео. Откройте инструктаж в современном браузере.')) + '</video>'
+      +'<div class="guest-video-meta"><span class="role-pill">' + (lang === 'en' ? 'EN' : 'RU') + '</span>'
+      +'<span id="videoTime">0:00 / —</span><span id="videoPercent">0%</span></div>'
+      +'<div class="guest-video-status" id="videoStatus" role="status">' + esc(tr('Загрузка видео…')) + '</div>'
+      +'<div class="guest-video-error hidden" id="videoError" role="alert">'
+      +'<p>' + esc(tr('Не удалось загрузить видео. Проверьте подключение к интернету и повторите попытку.')) + '</p>'
+      +'<button type="button" class="btn btn-secondary btn-sm" id="videoRetry">' + esc(tr('Повторить загрузку')) + '</button></div>'
+      +'<div class="slide-footer"><div class="info-box" style="margin-bottom:0">'
+      +esc(tr('Просмотрите видео полностью, чтобы перейти к разделам. Субтитры включаются в меню плеера.')) + '</div></div></div>'
       +'<div class="page-bottom-spacer"></div></div>'
       +'<div class="sticky-bottom no-print"><div class="sticky-bottom-inner">'
       +tr('<button class="btn btn-secondary" id="btnBackV" type="button">← Назад</button>')
       +tr('<button class="btn btn-primary btn-grow" id="btnToSlides" type="button" disabled>К инструктажу →</button>')
       +'</div></div>';
 
-    var playBtn    = $('#vpPlayBtn');
-    var vpIcon     = $('#vpIcon');
-    var vpTimer    = $('#vpTimer');
-    var vpFill     = $('#vpFill');
-    var vpSec      = $('#vpSec');
-    var btnToSlides = $('#btnToSlides');
-    var vpPct      = $('#vpPct');
-    var vpBar      = $('#vpBar');
-    var vpDot      = $('#vpDot');
-
-    var duration = 8;
-    if (lsG(K.G_VID, false)) videoElapsed = duration;
-    function paintVideo() {
-      var complete = videoElapsed >= duration;
-      playBtn.style.display = (videoPlaying || complete) ? 'none' : '';
-      vpIcon.textContent = complete ? '✓' : videoPlaying ? '⏵' : '▶';
-      vpTimer.classList.toggle('hidden', !videoPlaying && !complete);
-      if (complete) {
-        vpTimer.innerHTML = tr('<span style="color:var(--green);font-weight:800;font-size:.85rem">✓ Просмотрено</span>');
-        var finPct = Math.round(1 / (totalSlides + 1) * 100) + '%';
-        vpPct.textContent = finPct;
-        vpBar.style.width = finPct;
-        vpDot.classList.remove('active'); vpDot.classList.add('done'); vpDot.textContent = '✓';
-        btnToSlides.disabled = false;
-      } else {
-        vpFill.style.width = Math.round(videoElapsed / duration * 100) + '%';
-        vpSec.textContent = duration - videoElapsed;
+    var video = $('#guestVideo');
+    var next = $('#btnToSlides');
+    var status = $('#videoStatus');
+    var errorBox = $('#videoError');
+    var done = lsG(K.G_VID, false) === true;
+    var progress = lsG(K.G_VPOS, {});
+    if (!progress || typeof progress !== 'object' || Array.isArray(progress)) progress = {};
+    var saved = progress[lang] || {};
+    var maxTime = Number.isFinite(saved.maxTime) ? Math.max(0, saved.maxTime) : 0;
+    var position = Number.isFinite(saved.time) ? Math.max(0, saved.time) : 0;
+    var ready = false, disposed = false, lastTime = 0, lastClock = performance.now(), lastSave = 0;
+    var listeners = [];
+    function on(name, callback) { video.addEventListener(name, callback); listeners.push([name, callback]); }
+    function duration() { return Number.isFinite(video.duration) && video.duration > 0 ? video.duration : 0; }
+    function timeLabel(seconds) { seconds = Math.max(0, Math.floor(seconds)); return Math.floor(seconds / 60) + ':' + pad(seconds % 60); }
+    function persist(force) {
+      if (disposed || !ready || (!force && performance.now() - lastSave < 1000)) return;
+      position = Math.min(video.currentTime, done ? duration() : maxTime);
+      progress[lang] = { time: position, maxTime: maxTime };
+      lsS(K.G_VPOS, progress); lastSave = performance.now();
+    }
+    function paint() {
+      if (disposed) return;
+      var length = duration();
+      var pct = done ? 100 : length ? Math.min(99, Math.floor(maxTime / length * 100)) : 0;
+      $('#videoTime').textContent = timeLabel(video.currentTime) + ' / ' + (length ? timeLabel(length) : '—');
+      $('#videoPercent').textContent = pct + '%';
+      next.disabled = !done;
+      var overall = done ? Math.round(100 / (totalSlides + 1)) + '%' : '0%';
+      $('#vpPct').textContent = overall; $('#vpBar').style.width = overall;
+      $('#vpDot').classList.toggle('done', done); $('#vpDot').classList.toggle('active', !done);
+      $('#vpDot').textContent = done ? '✓' : '▶';
+      if (done) status.textContent = tr('Видео просмотрено. Можно перейти к разделам.');
+    }
+    on('loadedmetadata', function() {
+      if (disposed || !duration()) return;
+      maxTime = Math.min(maxTime, duration());
+      ready = true;
+      video.currentTime = Math.min(position, done ? duration() : maxTime, Math.max(0, duration() - 0.1));
+      lastTime = video.currentTime; lastClock = performance.now();
+      errorBox.classList.add('hidden');
+      status.textContent = tr('Нажмите ▶ для просмотра.');
+      paint();
+    });
+    on('timeupdate', function() {
+      if (!ready || disposed) return;
+      var now = performance.now();
+      var delta = video.currentTime - lastTime;
+      var allowance = Math.max(0.65, (now - lastClock) / 1000 * video.playbackRate + 0.4);
+      // Count continuous playback only. Seeking to the end cannot complete the induction.
+      if (!video.seeking && delta >= 0 && delta <= allowance && lastTime <= maxTime + 0.35) {
+        maxTime = Math.max(maxTime, video.currentTime);
       }
-    }
-    function startVideoPreview() {
-      if (videoElapsed >= duration || videoTimer !== null) return;
-      videoPlaying = true;
-      paintVideo();
-      videoTimer = setInterval(function() {
-        videoElapsed++;
-        if (videoElapsed >= duration) {
-          stopVideoTimer(); videoPlaying = false;
-          lsS(K.G_VID, true);
-        }
-        paintVideo();
-      }, 1000);
-    }
-    playBtn.addEventListener('click', startVideoPreview);
-    paintVideo();
-    if (videoPlaying && videoElapsed < duration) startVideoPreview();
-    if ($('#btnToSlides')) $('#btnToSlides').addEventListener('click', function() { showGuestIntro(0); });
-    if ($('#btnBackV'))    $('#btnBackV').addEventListener('click', showLanding);
-    scrollTop();
+      lastTime = video.currentTime; lastClock = now;
+      persist(false); paint();
+    });
+    on('seeking', function() {
+      if (!ready || disposed) return;
+      if (!done && video.currentTime > maxTime + 0.35) {
+        video.currentTime = maxTime;
+        status.textContent = tr('Перемотка вперёд доступна в уже просмотренной части видео.');
+      }
+    });
+    on('seeked', function() { lastTime = video.currentTime; lastClock = performance.now(); persist(true); paint(); });
+    on('play', function() { lastTime = video.currentTime; lastClock = performance.now(); });
+    on('playing', function() {
+      if (disposed) return;
+      errorBox.classList.add('hidden'); status.textContent = tr('Просмотр видео…'); paint();
+    });
+    on('waiting', function() { if (!disposed && !done) status.textContent = tr('Загрузка видео…'); });
+    on('pause', function() { persist(true); if (!disposed && !done) status.textContent = tr('Просмотр приостановлен.'); });
+    on('ended', function() {
+      if (disposed || !ready || !duration() || !video.ended || video.error) return;
+      if (maxTime < duration() - 0.5) {
+        video.currentTime = maxTime;
+        status.textContent = tr('Просмотрите видео полностью, чтобы продолжить.');
+        return;
+      }
+      done = true; maxTime = duration(); lsS(K.G_VID, true); persist(true); paint();
+    });
+    on('error', function() {
+      if (disposed) return;
+      errorBox.classList.remove('hidden'); status.textContent = tr('Видео недоступно.');
+      paint();
+    });
+    $('#videoRetry').addEventListener('click', function() {
+      persist(true); ready = false;
+      errorBox.classList.add('hidden'); status.textContent = tr('Загрузка видео…');
+      video.load();
+    });
+    videoCleanup = function() {
+      persist(true); disposed = true;
+      listeners.forEach(function(pair) { video.removeEventListener(pair[0], pair[1]); });
+      video.pause(); video.removeAttribute('src'); video.load();
+    };
+    next.addEventListener('click', function() { if (done) showGuestIntro(0); });
+    $('#btnBackV').addEventListener('click', showLanding);
+    paint(); scrollTop();
   }
 
   /* ================================================================
@@ -441,7 +495,7 @@
      GUEST FLOW — Step 1-N: INTRO WIZARD
      ================================================================ */
   function showGuestIntro(stepIdx) {
-    stopVideoTimer();
+    stopVideo();
     S.screen='guest-intro'; updateTopBar();
     var intro = getIntro();
     if (!intro.length) {
@@ -723,7 +777,7 @@
   }
 
   function showGuestDone() {
-    stopVideoTimer();
+    stopVideo();
     S.screen='guest-done'; updateTopBar();
     var intro = getIntro();
     var prof  = lsG(K.G_PROF, {});
@@ -996,17 +1050,19 @@
     var brg=$('#btnResetGuest'), bra=$('#btnResetAll');
     if(brg) brg.addEventListener('click', function(){
       if(!confirm(tr('Начать заново? Весь прогресс будет сброшен.'))) return;
-      lsD(K.G_PROG); lsD(K.G_PROF); lsD(K.G_VID); lsD(K.ROLE);
+      stopVideo();
+      lsD(K.G_PROG); lsD(K.G_PROF); lsD(K.G_VID); lsD(K.G_VPOS); lsD(K.ROLE); lsD('tmk_video_ok');
       // Очистить ответы на проверочные вопросы
       window.GUEST_INTRO && window.GUEST_INTRO.forEach(function(s){ try{ localStorage.removeItem('tmk_mc_'+s.id); }catch(e){} });
-      stopVideoTimer(); videoElapsed = 0; videoPlaying = false; S.quizDrafts = {}; S.landingDraft = null;
+      stopVideo(); S.quizDrafts = {}; S.landingDraft = null;
       close(); showLanding();
     });
     if(bra) bra.addEventListener('click', function(){
       if(!confirm(tr('Сбросить ВСЕ данные приложения?'))) return;
-      Object.keys(K).forEach(function(k){lsD(K[k]);});
+      stopVideo();
+      Object.keys(K).forEach(function(k){lsD(K[k]);}); lsD('tmk_video_ok');
       window.GUEST_INTRO && window.GUEST_INTRO.forEach(function(s){ try{ localStorage.removeItem('tmk_mc_'+s.id); }catch(e){} });
-      stopVideoTimer(); videoElapsed = 0; videoPlaying = false; S.quizDrafts = {}; S.landingDraft = null;
+      stopVideo(); S.quizDrafts = {}; S.landingDraft = null;
       close(); showLanding();
     });
   }
@@ -1045,9 +1101,13 @@
     var videoOk = lsG(K.G_VID, false);
     var role    = lsG(K.ROLE);
     if (role === 'guest' && prof && prof.name) {
-      if (prog && prog.done) {
+      // Keep read sections and answers, but require the actual video after the demo release.
+      if (prog && prog.done && videoOk !== true) {
+        prog.done = false; lsS(K.G_PROG, prog);
+      }
+      if (prog && prog.done && videoOk === true) {
         showGuestDone();
-      } else if (videoOk) {
+      } else if (videoOk === true) {
         var resume = getIntro().findIndex(function(step) { return !canProceed(step, prog && Array.isArray(prog.steps) ? prog : {steps:[]}); });
         showGuestIntro(resume < 0 ? getIntro().length - 1 : resume);
       } else {

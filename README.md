@@ -14,7 +14,9 @@
 - Переключение языка сохраняет текущий раздел, введённые данные и выбранный ответ.
 - Подтверждение прохождения можно распечатать или передать через системное меню «Поделиться».
 - Серверная часть не подключена: записи не отправляются в центральный реестр.
-- На шаге видео используется восьмисекундная демонстрация. Сам видеоролик не включён.
+- Встроены готовые видео: RU с голосом «Дмитрий» (2:21) и EN (2:47), Full HD H.264/AAC. Язык видео соответствует переключателю RU / EN.
+- Субтитры доступны в меню плеера. Для загрузки дорожек WEBVTT используйте сайт через HTTP/HTTPS.
+- Позиция просмотра сохраняется отдельно для каждого языка. Переход к разделам открывается после полного просмотра одной языковой версии; перемотка вперёд ограничена уже просмотренной частью. Старый демонстрационный таймер не засчитывается.
 - Для шрифта Manrope используется Google Fonts; без сети доступен системный шрифт.
 
 ## Файлы
@@ -26,6 +28,7 @@
 | `guest-i18n.js` | Язык интерфейса и переводы |
 | `guest_intro.js` | Русские карточки и вопросы |
 | `guest_intro.en.js` | Английские карточки и вопросы |
+| `media/` | Русский и английский ролики, субтитры WEBVTT и обложки |
 
 ## Проверка релиза
 
@@ -35,4 +38,4 @@
 
 A bilingual visitor safety induction for TMK Research Centre / RusNITI. Open `index.html` and choose **EN** in the top bar. No build step is required. The release contains seven sections and five knowledge checks, with printable completion confirmation.
 
-Progress is stored in the current browser only. There is no connected backend; the video step is an eight-second demonstration without an actual video file.
+Progress is stored in the current browser only. There is no connected backend. The video step includes Russian (Dmitry voice, 2:21) and English (2:47) videos with optional WebVTT subtitles. Playback positions are saved separately for each language. Finish one language version to continue; the former demonstration timer does not count as video completion.
