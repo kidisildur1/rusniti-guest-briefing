@@ -286,7 +286,7 @@
       +'</div>'
       +'<div class="form-group">'
       +tr('<label class="form-label" for="gphone">Телефон</label>')
-      +'<input class="form-input" id="gphone" type="tel" placeholder="+7 (___) ___-__-__" value="'+esc(savedProf.phone||'')+'" data-phone="true" autocomplete="tel">'
+      +'<input class="form-input" id="gphone" type="tel" placeholder="'+esc(tr('Номер телефона с кодом страны'))+'" value="'+esc(savedProf.phone||'')+'" data-phone="true" autocomplete="tel">'
       +'</div>'
       +'</div>'
       +tr('<div class="info-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Данные используются только для подтверждения прохождения инструктажа</div>')
@@ -295,9 +295,6 @@
       +tr('<button class="btn btn-primary btn-full" id="btnStart" type="button">Начать инструктаж <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>')
       +'</div></div>';
 
-    var phoneEl = $('#gphone');
-    if (phoneEl) { phoneEl.addEventListener('input', function() { this.value = formatPhone(this.value); }); }
-
     $('#btnStart').addEventListener('click', function() {
       var nameEl = $('#gname'), nameHint = $('#gname-hint');
       var orgEl  = $('#gorg'),  orgHint  = $('#gorg-hint');
@@ -305,17 +302,21 @@
       if (!validateField(nameEl, nameHint, true, tr('ФИО'))) ok = false;
       if (!validateField(orgEl,  orgHint,  true, tr('организацию'))) ok = false;
       if (!ok) return;
-      lsS(K.G_PROF, {
+      var previous = lsG(K.G_PROF, {});
+      var profile = {
         name:      ($('#gname').value||'').trim(),
         org:       ($('#gorg').value||'').trim(),
         purpose:   ($('#gpurpose').value||'').trim(),
-        phone:     ($('#gphone').value||'').trim(),
-        dt:        fmtDt(new Date()),
-        sessionId: genId()
-      });
+        phone:     ($('#gphone').value||'').trim()
+      };
+      var continuing = isSameGuest(previous, profile);
+      if (!continuing) resetGuestProgress();
+      profile.dt = continuing && previous.dt ? previous.dt : fmtDt(new Date());
+      profile.sessionId = continuing ? previous.sessionId : genId();
+      lsS(K.G_PROF, profile);
       S.landingDraft = null;
       lsS(K.ROLE, 'guest');
-      showVideo();
+      resumeGuestBriefing();
     });
     scrollTop();
   }
@@ -464,18 +465,23 @@
   /* ================================================================
      GUEST FLOW — вспомогательные функции ввода данных
      ================================================================ */
-  /* ---- Phone mask helper ---- */
-  function formatPhone(val) {
-    var d = val.replace(/\D/g,'');
-    if (!d) return '';
-    if (d[0]==='7' || d[0]==='8') d = '7'+d.slice(1);
-    else if (d[0]!=='7') d = '7'+d;
-    var r = '+7';
-    if (d.length>1) r += ' ('+d.slice(1,4);
-    if (d.length>=4) r += ') '+d.slice(4,7);
-    if (d.length>=7) r += '-'+d.slice(7,9);
-    if (d.length>=9) r += '-'+d.slice(9,11);
-    return r;
+  /* ---- Visitor identity and session reset ---- */
+  function isSameGuest(previous, profile) {
+    if (!previous || typeof previous.sessionId !== 'string' || !previous.sessionId.trim()) return false;
+    function text(value) { return String(value || '').trim().replace(/\s+/g, ' ').toLocaleLowerCase(); }
+    function phone(value) { var raw = text(value); return raw.replace(/\D/g, '') || raw; }
+    return text(previous.name) === text(profile.name)
+      && text(previous.org) === text(profile.org)
+      && phone(previous.phone) === phone(profile.phone);
+  }
+
+  function resetGuestProgress() {
+    stopVideo();
+    [K.G_PROG, K.G_VID, K.G_VPOS, 'tmk_video_ok', SyncStatus.KEY].forEach(lsD);
+    [window.GUEST_INTRO, window.GUEST_INTRO_EN].forEach(function(intro) {
+      if (Array.isArray(intro)) intro.forEach(function(step) { lsD('tmk_mc_' + step.id); });
+    });
+    S.quizDrafts = {};
   }
 
   /* ---- Field validation helper ---- */
@@ -651,16 +657,16 @@
   /** Строит внутренность блока с вопросом (форма ответа) */
   function buildMicroCheckInner(mc, stepIdx) {
     var optHtml = mc.options.map(function(o, i) {
-      return '<div class="micro-option" data-oi="'+i+'">'
-        +'<div class="micro-radio"></div>'
+      return '<button type="button" class="micro-option" role="radio" aria-checked="false" tabindex="'+(i === 0 ? '0' : '-1')+'" data-oi="'+i+'" style="text-align:left;font:inherit">'
+        +'<span class="micro-radio" aria-hidden="true"></span>'
         +'<span class="micro-option-text">'+esc(o)+'</span>'
-        +'</div>';
+        +'</button>';
     }).join('');
     return '<div class="micro-check-head">'
       +tr('<span class="micro-check-badge">Проверка</span>')
-      +'<div class="micro-check-q">'+esc(mc.q)+'</div>'
+      +'<div class="micro-check-q" id="mcQuestion_'+stepIdx+'">'+esc(mc.q)+'</div>'
       +'</div>'
-      +'<div class="micro-check-body" id="mcOptions_'+stepIdx+'">'+optHtml+'</div>'
+      +'<div class="micro-check-body" id="mcOptions_'+stepIdx+'" role="radiogroup" aria-labelledby="mcQuestion_'+stepIdx+'">'+optHtml+'</div>'
       +'<div class="micro-footer">'
       +'<button class="btn btn-primary btn-full btn-sm" id="mcSubmit_'+stepIdx+tr('" disabled type="button">Подтвердить ответ</button>')
       +'</div>';
@@ -707,6 +713,9 @@
       body.querySelectorAll('.micro-feedback').forEach(function(el) { el.remove(); });
       body.querySelectorAll('.micro-option').forEach(function(el, i) {
         el.classList.toggle('selected', i === draft.selected);
+        el.setAttribute('aria-checked', String(i === draft.selected));
+        el.tabIndex = i === (draft.selected < 0 ? 0 : draft.selected) ? 0 : -1;
+        el.disabled = waiting;
         el.classList.toggle('correct-ans', waiting && i === mc.correct);
         el.classList.toggle('wrong-ans', waiting && i === draft.selected);
         el.style.pointerEvents = waiting ? 'none' : '';
@@ -724,6 +733,18 @@
       el.addEventListener('click', function() {
         if (draft.failedUntil > Date.now()) return;
         draft.selected = parseInt(this.dataset.oi, 10); paintAnswer();
+      });
+      el.addEventListener('keydown', function(event) {
+        if (draft.failedUntil > Date.now()) return;
+        var options = body.querySelectorAll('.micro-option');
+        var index = parseInt(this.dataset.oi, 10);
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') index = (index + 1) % options.length;
+        else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') index = (index + options.length - 1) % options.length;
+        else if (event.key === 'Home') index = 0;
+        else if (event.key === 'End') index = options.length - 1;
+        else return;
+        event.preventDefault();
+        draft.selected = index; paintAnswer(); options[index].focus();
       });
     });
     submitBtn.addEventListener('click', function() {
@@ -753,29 +774,6 @@
   /* ================================================================
      GUEST: DONE SCREEN
      ================================================================ */
-  /* ---- QR pseudo-placeholder: simple grid SVG ---- */
-  function genQrSvg(text) {
-    // Deterministic pseudo-QR from text hash — visual placeholder
-    // Replace with real QR lib (qrcode.js) when available
-    var hash = 0;
-    for (var i = 0; i < text.length; i++) { hash = ((hash << 5) - hash) + text.charCodeAt(i); hash |= 0; }
-    var cells = 13; var size = 78; var cell = size / cells;
-    var rects = '';
-    // Quiet zone + finder patterns hardcoded, data modules from hash
-    for (var r = 0; r < cells; r++) {
-      for (var c = 0; c < cells; c++) {
-        var isFinder = (r < 3 && c < 3) || (r < 3 && c >= cells-3) || (r >= cells-3 && c < 3);
-        var bit = isFinder ? 1 : (((hash >> ((r * cells + c) % 31)) & 1) ^ ((r + c) & 1) & 1);
-        if (bit) rects += '<rect x="' + (c * cell).toFixed(1) + '" y="' + (r * cell).toFixed(1) + '" width="' + (cell - 0.5).toFixed(1) + '" height="' + (cell - 0.5).toFixed(1) + '" fill="#111"/>';
-      }
-    }
-    // Finder pattern borders
-    var fp = '<rect x="0" y="0" width="' + (3*cell) + '" height="' + (3*cell) + '" fill="none" stroke="#111" stroke-width="1.5"/>' +
-             '<rect x="' + ((cells-3)*cell) + '" y="0" width="' + (3*cell) + '" height="' + (3*cell) + '" fill="none" stroke="#111" stroke-width="1.5"/>' +
-             '<rect x="0" y="' + ((cells-3)*cell) + '" width="' + (3*cell) + '" height="' + (3*cell) + '" fill="none" stroke="#111" stroke-width="1.5"/>';
-    return '<svg viewBox="0 0 '+size+' '+size+'" xmlns="http://www.w3.org/2000/svg" style="display:block">'+rects+fp+'</svg>';
-  }
-
   function showGuestDone() {
     stopVideo();
     S.screen='guest-done'; updateTopBar();
@@ -804,7 +802,7 @@
       +tr('<div class="done-hero-sub">Все разделы вводного инструктажа изучены</div>')
       +'<div class="done-id-block">'
       +tr('<div><div class="done-id-label">ID прохождения</div><div class="done-id-value">')+esc(sessionId)+'</div></div>'
-      +tr('<span class="done-synced-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Зафиксировано</span>')
+      +tr('<span class="done-synced-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Сохранено в браузере</span>')
       +'</div></div>'
       // ── Verification block
       +'<div class="verif-block">'
@@ -813,14 +811,13 @@
       +syncStatus
       +'</div>'
       +'<div class="verif-block-body">'
-      +tr('<div class="verif-qr" title="QR-код для верификации">')+genQrSvg(sessionId)+'</div>'
       +'<div class="verif-info">'
       +'<div class="verif-id-row">'
       +'<span class="verif-id-val">'+esc(sessionId)+'</span>'
       +tr('<button class="btn-copy" id="btnCopyId" type="button" title="Скопировать ID"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Скопировать</button>')
       +'</div>'
       +tr('<div class="verif-sections-count"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Пройдено: ')+sectionsDone+'/'+sectionsTotal+tr(' разделов</div>')
-      +tr('<div class="verif-note">Предъявите этот ID ответственному лицу для оформления пропуска. QR-код содержит идентификатор прохождения.</div>')
+      +tr('<div class="verif-note">Подтверждение сохранено только в этом браузере. Распечатайте его или отправьте ответственному лицу для оформления пропуска.</div>')
       +'</div></div></div>'
       // ── Receipt
       +'<div class="receipt-card">'
@@ -1050,19 +1047,12 @@
     var brg=$('#btnResetGuest'), bra=$('#btnResetAll');
     if(brg) brg.addEventListener('click', function(){
       if(!confirm(tr('Начать заново? Весь прогресс будет сброшен.'))) return;
-      stopVideo();
-      lsD(K.G_PROG); lsD(K.G_PROF); lsD(K.G_VID); lsD(K.G_VPOS); lsD(K.ROLE); lsD('tmk_video_ok');
-      // Очистить ответы на проверочные вопросы
-      window.GUEST_INTRO && window.GUEST_INTRO.forEach(function(s){ try{ localStorage.removeItem('tmk_mc_'+s.id); }catch(e){} });
-      stopVideo(); S.quizDrafts = {}; S.landingDraft = null;
+      resetGuestProgress(); lsD(K.G_PROF); lsD(K.ROLE); S.landingDraft = null;
       close(); showLanding();
     });
     if(bra) bra.addEventListener('click', function(){
       if(!confirm(tr('Сбросить ВСЕ данные приложения?'))) return;
-      stopVideo();
-      Object.keys(K).forEach(function(k){lsD(K[k]);}); lsD('tmk_video_ok');
-      window.GUEST_INTRO && window.GUEST_INTRO.forEach(function(s){ try{ localStorage.removeItem('tmk_mc_'+s.id); }catch(e){} });
-      stopVideo(); S.quizDrafts = {}; S.landingDraft = null;
+      resetGuestProgress(); Object.keys(K).forEach(function(k){lsD(K[k]);}); S.landingDraft = null;
       close(); showLanding();
     });
   }
@@ -1094,8 +1084,7 @@
     window.GuestI18n.applyStatic();
   }
 
-  function init() {
-    initLanguage(); initSettings(); updateTopBar(); setInterval(updateTopBar, 60000);
+  function resumeGuestBriefing() {
     var prog    = lsG(K.G_PROG, {done:false, steps:[]});
     var prof    = lsG(K.G_PROF, {});
     var videoOk = lsG(K.G_VID, false);
@@ -1116,6 +1105,11 @@
     } else {
       showLanding();
     }
+  }
+
+  function init() {
+    initLanguage(); initSettings(); updateTopBar(); setInterval(updateTopBar, 60000);
+    resumeGuestBriefing();
   }
 
   document.addEventListener('DOMContentLoaded', init);

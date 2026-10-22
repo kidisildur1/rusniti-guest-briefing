@@ -1,5 +1,5 @@
 // ===== data/guest_intro.en.js =====
-// Introductory safety briefing — TMK Research Centre LLC / RusNITI JSC
+// Occupational safety and health induction — TMK Research Centre LLC / RusNITI JSC
 // Card format: icon, title, sub, type (rule / ban / ok)
 // microCheck: { q, options[], correct (index), explanation }
 
@@ -34,7 +34,7 @@ window.GUEST_INTRO_EN = [
       { icon: "zap", title: "Do not touch live electrical parts", sub: "This includes live wires, busbars, terminals and contacts", type: "ban" },
       { icon: "tag", title: "Do not remove warning signs or notices", sub: "Electrical hazard signs indicate a real risk of electric shock", type: "ban" },
       { icon: "fence", title: "Do not go beyond protective barriers", sub: "This includes high-voltage equipment and electrical distribution areas", type: "ban" },
-      { icon: "power", title: "Do not switch on electrical equipment yourself", sub: "Only authorized personnel may operate electrical equipment", type: "ban" },
+      { icon: "power", title: "Do not switch on electrical equipment yourself", sub: "Only authorised personnel may operate electrical equipment", type: "ban" },
       { icon: "alert", title: "Do not use faulty electrical equipment", sub: "Damaged insulation, broken housings, faulty sockets and plugs", type: "ban" }
     ],
     microCheck: {
@@ -46,14 +46,14 @@ window.GUEST_INTRO_EN = [
         "Keeping clear of it"
       ],
       correct: 1,
-      explanation: "Switching any electrical equipment on or off yourself is strictly prohibited. Only authorized personnel may operate it."
+      explanation: "Switching any electrical equipment on or off yourself is strictly prohibited. Only authorised personnel may operate it."
     }
   },
   {
     id: 3,
     title: "Conduct on company premises",
     cards: [
-      { icon: "check", title: "Follow occupational health and safety requirements", sub: "Follow the instructions of the designated company employee", type: "rule" },
+      { icon: "check", title: "Follow occupational safety and health requirements", sub: "Follow the instructions of the designated company employee", type: "rule" },
       { icon: "bell", title: "Report hazardous situations immediately", sub: "If you identify a violation, notify the designated employee immediately", type: "rule" },
       { icon: "hard-hat", title: "Use the personal protective equipment provided", sub: "Personal protective equipment (PPE) is mandatory in production and laboratory areas", type: "rule" },
       { icon: "fence", title: "Do not cross warning markings or barriers", sub: "You must comply with safety signs and information notices", type: "ban" },
@@ -61,7 +61,7 @@ window.GUEST_INTRO_EN = [
       { icon: "ban", title: "Do not enter areas where lifting equipment is operating", sub: "Do not leave the designated safe route without permission", type: "ban" }
     ],
     microCheck: {
-      q: "What must you do if you identify a violation of occupational health and safety requirements?",
+      q: "What must you do if you identify a violation of occupational safety and health requirements?",
       options: [
         "Correct it yourself and continue the tour",
         "Report it immediately to the designated company employee",
@@ -69,7 +69,7 @@ window.GUEST_INTRO_EN = [
         "Nothing — it is not the responsibility of a visitor on a business trip"
       ],
       correct: 1,
-      explanation: "Violations of occupational health and safety requirements must be reported immediately to the designated employee."
+      explanation: "Violations of occupational safety and health requirements must be reported immediately to the designated employee."
     }
   },
   {
@@ -120,12 +120,12 @@ window.GUEST_INTRO_EN = [
     id: 6,
     title: "Hazards on company premises",
     cards: [
-      { icon: "ice", title: "Slippery and uneven surfaces", sub: "Ice, wet floors and changes in floor level present a risk of falling", type: "ban" },
-      { icon: "zap", title: "Electric current", sub: "Contact with live parts or faulty electrical equipment can cause electric shock", type: "ban" },
-      { icon: "alert", title: "Moving equipment and vehicles", sub: "Failure to keep a safe distance or observe traffic zones presents a risk of injury", type: "ban" },
-      { icon: "monitor", title: "Computers and office equipment", sub: "Overheating and damaged insulation present a fire hazard", type: "rule" },
-      { icon: "flask", title: "Chemical reagents and vapours", sub: "Contact with reagents and toxic substances in laboratory areas", type: "ban" },
-      { icon: "eye", title: "Increased eye strain", sub: "From prolonged work with screens and optical equipment", type: "rule" }
+      { icon: "ice", title: "Slippery and uneven surfaces", sub: "Ice, wet floors and changes in floor level present a risk of falling", type: "warn" },
+      { icon: "zap", title: "Electric current", sub: "Contact with live parts or faulty electrical equipment can cause electric shock", type: "warn" },
+      { icon: "alert", title: "Moving equipment and vehicles", sub: "Failure to keep a safe distance or follow designated traffic routes presents a risk of injury", type: "warn" },
+      { icon: "monitor", title: "Computers and office equipment", sub: "Overheating and damaged insulation present a fire hazard", type: "warn" },
+      { icon: "flask", title: "Chemical reagents and vapours", sub: "Contact with reagents and toxic substances in laboratory areas", type: "warn" },
+      { icon: "eye", title: "Increased eye strain", sub: "From prolonged work with screens and optical equipment", type: "warn" }
     ]
   },
   {
